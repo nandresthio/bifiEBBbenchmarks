@@ -1,5 +1,3 @@
-[![INFORMS Journal on Computing Logo](https://INFORMSJoC.github.io/logos/INFORMS_Journal_on_Computing_Header.jpg)](https://pubsonline.informs.org/journal/ijoc)
-
 # Bi-fidelity Surrogate Modelling benchmark problems
 
 The software and data in this repository aim to provide a benchmark for Bi-Fidelity Expensive Black Box problems, both for surrogate model building and for optimisation. It implements both classical instances from the literature, as well as the instance generating procedure presented in the paper [Bi-fidelity Surrogate Modelling: Showcasing the need for new test instances](https://doi.org/10.1287/ijoc.2019.0934) by Andrés-Thió N, Muñoz MA, and Smith-Miles K. It also employs instance measures in order to generate varied testing suites of different sizes, to be used by the community when analysing the performance of new Bi-fidelity Expensive Black-Box problems.
