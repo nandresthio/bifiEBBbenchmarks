@@ -449,8 +449,31 @@ for(i in 7:12){
     print(paste0(dim, " ", sum(finalInstancesOriginal$feature_dimension == dim), " ", sum(finalInstancesLit$feature_dimension == dim)))
   }
   write.table(finalInstances$instances, paste0("data/availableFunctions/chosenTestSuiteN", nrow(finalInstances), ".txt"), quote = FALSE, col.names = FALSE, row.names = FALSE)
-
 }
+
+eps <- 5
+labels <- read.table(paste0("data/features/filtering/filteringLabelsEps", eps, ".txt"), header = TRUE, sep = " ")
+finalInstances <- instancesOrdered[!labels$preclude,]
+# Write final instances to file!
+finalInstancesOriginal <- allFeatures[allFeatures$instances %in% finalInstances$instances, ]
+sampleInstances <- c()
+for(func in finalInstances$instances){
+  dim <- finalInstancesOriginal[finalInstancesOriginal$instances == func, "feature_dimension"]
+  print(func)
+  print(dim)
+  for(sizeLow in seq(4, 20, by = 4)){
+    for(sizeHigh in seq(2, 20, by = 2)){
+      if(sizeHigh > sizeLow){next}
+      sampleInstances <- c(sampleInstances, paste0("(", func, ",", sizeHigh * dim, ",", sizeLow * dim, ",1-40)"))
+    }
+  }
+}
+write.table(sampleInstances, "data/availableFunctions/instancesWithSample.txt", quote = FALSE, col.names = FALSE, row.names = FALSE)
+
+
+
+
+
 
 
 

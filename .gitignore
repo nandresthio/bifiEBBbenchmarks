@@ -6,3 +6,4 @@
 /data/features/*.txt
 /data/features/filtering/*.txt
 /data/samplePlans/*.txt
+/data/clusterResults

@@ -95,36 +95,36 @@ for(index in 1:length(functionNames)){
   }
   toc()
   
-  # disp("Basic features:")
-  # X <- data.frame(t(X))
-  # basicFeatures <- functionBasicFeaturesWithSample(functionName, X, TRUE, fmin, fmax)
-  # X <- data.frame(t(X))
-  # # basicFeatures <- functionBasicFeatures(functionName, seed, TRUE, fmin, fmax)
-  # disp(basicFeatures)
-  # 
-  # suffixes <- c("_0_1", "_0_2", "_0_3", "_0_4", "_0_5", "_0_6", "_0_7", "_0_8", "_0_9", "_0_95", "_0_975", "_mean", "_sd", "_coeff")
-  # # basicFeaturesNames <- c("instances",
-  # #                         "feature_CC",
-  # #                         "feature_C",
-  # #                         "feature_RRMSE", 
-  # #                         paste0("feature_LCC", suffixes),
-  # #                         paste0("feature_LC", suffixes))
+  disp("Basic features:")
+  X <- data.frame(t(X))
+  basicFeatures <- functionBasicFeaturesWithSample(functionName, X, TRUE, fmin, fmax)
+  X <- data.frame(t(X))
+  # basicFeatures <- functionBasicFeatures(functionName, seed, TRUE, fmin, fmax)
+  disp(basicFeatures)
+
+  suffixes <- c("_0_1", "_0_2", "_0_3", "_0_4", "_0_5", "_0_6", "_0_7", "_0_8", "_0_9", "_0_95", "_0_975", "_mean", "_sd", "_coeff")
   # basicFeaturesNames <- c("instances",
-  #                         "feature_dimension",
   #                         "feature_CC",
+  #                         "feature_C",
   #                         "feature_RRMSE",
-  #                         paste0("feature_LCC", suffixes))
-  # 
-  # initialVals <- c(functionName, dim, basicFeatures)
-  # 
-  # if(index == 1){
-  #   allFeatures <- initialVals
-  #   names(allFeatures) <- basicFeaturesNames
-  # }else{
-  #   allFeatures[index, basicFeaturesNames] <- initialVals
-  # }
-  # write.table(allFeatures, paste0("../data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
-  # toc()
+  #                         paste0("feature_LCC", suffixes),
+  #                         paste0("feature_LC", suffixes))
+  basicFeaturesNames <- c("instances",
+                          "feature_dimension",
+                          "feature_CC",
+                          "feature_RRMSE",
+                          paste0("feature_LCC", suffixes))
+
+  initialVals <- c(functionName, dim, basicFeatures)
+
+  if(index == 1){
+    allFeatures <- initialVals
+    names(allFeatures) <- basicFeaturesNames
+  }else{
+    allFeatures[index, basicFeaturesNames] <- initialVals
+  }
+  write.table(allFeatures, paste0("../data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+  toc()
   
   # disp("Create feature sample")
   # ctrl = list(init_sample.type = "lhs",
