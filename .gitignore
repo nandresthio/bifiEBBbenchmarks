@@ -4,4 +4,5 @@
 
 # Ignore certain files in the data folder
 /data/features/*.txt
+/data/features/filtering/*.txt
 /data/samplePlans/*.txt
