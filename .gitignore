@@ -7,3 +7,5 @@
 /data/features/filtering/*.txt
 /data/samplePlans/*.txt
 /data/clusterResults
+# Scripts used for unimelb
+/scripts

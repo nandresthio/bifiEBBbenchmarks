@@ -133,7 +133,8 @@ for(index in 1:length(functionNames)){
         }else{
           allFeatures[currIndex, basicFeaturesNames] <- initialVals
         }
-        write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+        if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+        else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
         toc()
         
         disp("Create feature sample")
@@ -197,7 +198,8 @@ for(index in 1:length(functionNames)){
               allFeatures[currIndex, localFeaturesNames] <- localFeatures
             }
             
-            write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+            else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
             toc()
           },
           error=function(cond) {
@@ -253,7 +255,8 @@ for(index in 1:length(functionNames)){
             }else{
               allFeatures[currIndex, localFeaturesNames] <- localFeatures
             }
-            write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+            else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
             toc()
           },
           error=function(cond) {
@@ -309,7 +312,8 @@ for(index in 1:length(functionNames)){
             }else{
               allFeatures[currIndex, localFeaturesNames] <- localFeatures
             }
-            write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+            else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
             toc()
           },
           error=function(cond) {
