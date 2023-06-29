@@ -162,7 +162,7 @@ vector<double> calculateFunctionFeatures(BiFidelityFunction* function, int sampl
 	// Define all weights as 1 to get normal correlation coefficient
 	vector<double> weightsNormal(size, 1);
 	double correlationCoefficient = weightedCorrelationCoefficient(highSample, lowSample, weightsNormal);
-	double sampleCorrelation = weightedCorrelationCoefficient(highSample, lowSample, weightsNormal, false);
+	// double sampleCorrelation = weightedCorrelationCoefficient(highSample, lowSample, weightsNormal, false);
 	double relativeError = relativeRootMeanSquaredError(highSample, lowSample);
 	// Calculate LCC values
 	pair< vector<double>, vector<double> > localCorrelations = calculateLocalCorrelations(function, r, pVals, sample, highSample, lowSample);

@@ -1,0 +1,7 @@
+# Compiled Object files
+*.o
+*.exe
+
+# Ignore certain files in the data folder
+/data/features/*.txt
+/data/samplePlans/*.txt
