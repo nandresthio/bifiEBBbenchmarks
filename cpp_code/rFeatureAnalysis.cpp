@@ -137,10 +137,10 @@ vector<double> functionBasicFeaturesWithSampleAndVals(string functionName, vecto
 vector< vector< vector<double> > > functionSample(string functionName, int seed, int highFiBudget, int lowFiBudget, bool knowOptVals = false, double knownFmin = 0, double knownFmax = 0){
 	BiFidelityFunction* function = processFunctionName(functionName, knowOptVals, knownFmin, knownFmax);
 	// Here want to access the sample from the appropriate file
-	string samplePlanFilename = "../data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(lowFiBudget) + "-s" + to_string(seed) + ".txt";
+	string samplePlanFilename = "data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(lowFiBudget) + "-s" + to_string(seed) + ".txt";
 	vector< VectorXd > sampledPointsLow = readPointsFromFile(samplePlanFilename, lowFiBudget, function->d_);
 	
-	samplePlanFilename = "../data/samplePlans/morrisMitchellSubset-dim" + to_string(function->d_) + "-nL" + to_string(lowFiBudget) + "-nH" + to_string(highFiBudget) + "-s" + to_string(seed) + ".txt";
+	samplePlanFilename = "data/samplePlans/morrisMitchellSubset-dim" + to_string(function->d_) + "-nL" + to_string(lowFiBudget) + "-nH" + to_string(highFiBudget) + "-s" + to_string(seed) + ".txt";
 	vector< VectorXd > sampledPoints = readPointsFromFile(samplePlanFilename, highFiBudget, function->d_);
 	if((int)sampledPoints.size() == 0){
 		SampleGenerator* sampleGenerator = new SampleGenerator(function, seed, false);

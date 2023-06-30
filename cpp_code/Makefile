@@ -1,5 +1,3 @@
-python:
-	make -f Makefile.python
 cluster:
 	make -f Makefile.cluster
 windows:

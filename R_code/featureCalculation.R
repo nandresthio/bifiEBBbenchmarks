@@ -24,8 +24,8 @@ arrayNumEnd = indexAdd + indexNum * indexMult
 
 tic()
 
-litFunctions <- read.table("../data/availableFunctions/literatureBiSourceAll.txt", header = FALSE, sep = " ", fill = TRUE)[[1]]
-newFunctions <- read.table("../data/availableFunctions/disturbanceFunctions.txt", header = FALSE, sep = " ", fill = TRUE)[[1]]
+litFunctions <- read.table("data/availableFunctions/literatureBiSourceAll.txt", header = FALSE, sep = " ", fill = TRUE)[[1]]
+newFunctions <- read.table("data/availableFunctions/disturbanceFunctions.txt", header = FALSE, sep = " ", fill = TRUE)[[1]]
 
 litFunctions <- litFunctions[str_which(litFunctions, "SOLAR", negate = TRUE)]
 
@@ -34,8 +34,7 @@ functions <- c(litFunctions, newFunctions)
 functionNames  <- functions[arrayNumStart:arrayNumEnd]
 functionNames <- functionNames[!is.na(functionNames)]
 
-# sourceCpp(paste0('../cpp_code/copies/copy', indexNum, '/rFeatureAnalysis.cpp'), rebuild = TRUE)
-sourceCpp(paste0('../cpp_code/rFeatureAnalysis.cpp'))
+sourceCpp('cpp_code/rFeatureAnalysis.cpp')
 
 
 
@@ -88,7 +87,7 @@ for(index in 1:length(functionNames)){
   disp(upperBound)
   
   disp("Get sample:")
-  X <- read.table(paste0("../data/samplePlans/LHS-dim", dim, "-n", 1000*dim,".txt"))
+  X <- read.table(paste0("data/samplePlans/LHS-dim", dim, "-n", 1000*dim,".txt"))
   # Need to unscale it (i.e. take it away from the [0,1]^d hypercube)
   for(i in 1:dim){
     X[i] <- lowerBound[[i]] + X[i] * (upperBound[[i]] - lowerBound[[1]])
@@ -123,7 +122,7 @@ for(index in 1:length(functionNames)){
   }else{
     allFeatures[index, basicFeaturesNames] <- initialVals
   }
-  write.table(allFeatures, paste0("../data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+  write.table(allFeatures, paste0("data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
   toc()
   
   # disp("Create feature sample")
@@ -188,7 +187,7 @@ for(index in 1:length(functionNames)){
         }else{
           allFeatures[index, localFeaturesNames] <- localFeatures
         }
-        write.table(allFeatures, paste0("../data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+        write.table(allFeatures, paste0("data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
         toc()
       },
       error=function(cond) {
@@ -246,7 +245,7 @@ for(index in 1:length(functionNames)){
           allFeatures[index, localFeaturesNames] <- localFeatures
         }
 
-        write.table(allFeatures, paste0("../data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+        write.table(allFeatures, paste0("data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
         toc()
       },
       error=function(cond) {
@@ -302,7 +301,7 @@ for(index in 1:length(functionNames)){
         }else{
           allFeatures[index, localFeaturesNames] <- localFeatures
         }
-        write.table(allFeatures, paste0("../data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
+        write.table(allFeatures, paste0("data/clusterResults/featureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)
         toc()
       },
       error=function(cond) {

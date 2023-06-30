@@ -6,8 +6,8 @@
 #include <ctime>
 #include <cmath>
 // Uncomment this for everything except running rFeatureAnalysis.cpp from windows
-#include <Eigen/Dense>
-// #include "C:\Users\nandr\Documents\eigen-3.4.0\Eigen\Dense"
+// #include <Eigen/Dense>
+#include "C:\Users\nandr\Documents\eigen-3.4.0\Eigen\Dense"
 
 #include <fstream>
 #include <iostream>

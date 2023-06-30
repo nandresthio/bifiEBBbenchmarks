@@ -15,7 +15,9 @@ source("customFeatureCalculation.R")
 
 
 # Select functions for which sample features will be calculated
-functions <- read.table("../data/availableFunctions/chosenTestSuiteN305.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
+functions <- read.table("data/availableFunctions/chosenTestSuiteN305.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
+functions <- read.table("data/availableFunctions/literatureBiSourceDim5.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
+functions <- functions[str_which(functions, "SOLAR")]
 # Select sizes for low and high fidelities
 highFiSizes <- seq(2, 20, by = 2)
 lowFiSizes <- seq(4, 20, by = 4)
@@ -37,7 +39,7 @@ arrayNumEnd = indexAdd + indexNum * indexMult
 tic()
 
 
-sourceCpp(paste0('../cpp_code/rFeatureAnalysis.cpp'))
+sourceCpp('cpp_code/rFeatureAnalysis.cpp')
 
 functionNames  <- functions[arrayNumStart:arrayNumEnd]
 functionNames <- functionNames[!is.na(functionNames)]
@@ -133,8 +135,8 @@ for(index in 1:length(functionNames)){
         }else{
           allFeatures[currIndex, basicFeaturesNames] <- initialVals
         }
-        if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
-        else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
+        if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+        else{write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
         toc()
         
         disp("Create feature sample")
@@ -198,8 +200,8 @@ for(index in 1:length(functionNames)){
               allFeatures[currIndex, localFeaturesNames] <- localFeatures
             }
             
-            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
-            else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
+            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+            else{write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
             toc()
           },
           error=function(cond) {
@@ -255,8 +257,8 @@ for(index in 1:length(functionNames)){
             }else{
               allFeatures[currIndex, localFeaturesNames] <- localFeatures
             }
-            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
-            else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
+            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+            else{write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
             toc()
           },
           error=function(cond) {
@@ -312,8 +314,8 @@ for(index in 1:length(functionNames)){
             }else{
               allFeatures[currIndex, localFeaturesNames] <- localFeatures
             }
-            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
-            else{write.table(allFeatures, paste0("../data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
+            if(arrayNumStart == arrayNumEnd){write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, ".txt"), quote = FALSE, row.names = FALSE)}
+            else{write.table(allFeatures, paste0("data/clusterResults/sampleFeatureRun_arrayJob", arrayNumStart, "-", arrayNumEnd, ".txt"), quote = FALSE, row.names = FALSE)}
             toc()
           },
           error=function(cond) {

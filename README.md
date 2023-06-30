@@ -40,6 +40,12 @@ TO BE CONTINUED!!
 
 ## To do
  - Add instructions on populating folders `data/samplePlans` and `features` from figshare
- - Add instructions on adding SOLAR folder if want to use SOLAR instances
+ - Add instructions on adding SOLAR folder if want to use SOLAR instances. Need to make sure function works for linux as well.
+  - Call `git clone https://github.com/bbopt/solar.git` from cpp_code
+  - Call `cd solar/src/`
+  - Call `make` (although I need to remove -lc from Makefile)
+  - Call `cd ..`
+  - Call `bin\solar -check`
+  - If all goes well, this should be ready to go!
  - Deal with linking Eigen when using Sourcecpp
 

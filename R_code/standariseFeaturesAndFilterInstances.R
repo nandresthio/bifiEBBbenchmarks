@@ -2,18 +2,18 @@ source("R_code/dataProcessor.R")
 
 # The code that follows is divided into four sections, each of which can be run
 # for reproducibility purposes:
-#
+
 # - The first combines the files from the cluster into a single file.
 #   This file is given with the repo, so new users should not require to run this
-# 
+
 # - The second cleans the feature values by removing undesired
 #   features and removing features with None and Inf.
-#
+
 # - The third standarises the feature values by normalising the features, and then
 #   either using this normalised values and bounding them within [-4,4] to remove
 #   outliers, or scaling them to lie within [-2,2]. This is done so that the feature
 #   values are comparable when running the instance filtering
-#
+
 # - The fourth runs an instance filtering technique to create as varied a subset
 #   as possible to conduct further testing.
 

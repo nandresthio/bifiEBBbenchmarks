@@ -115,7 +115,7 @@ SOLARFunction::SOLARFunction(double fidelityLevel, int fileNum):
 	fidelityLevel_(fidelityLevel),
 	fileNum_(fileNum){
 		if(fidelityLevel_ <= 0 || fidelityLevel_ > 1){
-			printf("Initialising SOLAR simulation function with fidelity outside of [0,1], this does not work! Stopping now...\n");
+			printf("Initialising SOLAR simulation function with fidelity outside of (0,1], this does not work! Stopping now...\n");
 			exit(0);
 		}
 	}
@@ -134,14 +134,14 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	VectorXd point = scalePoint(inputPoint);
 	// Need to create a file, save the point to be evaluated, evaluate, then delete the file
 	ofstream pointOutput;
-	pointOutput.open("../solar/points/point" + to_string(fileNum_) + ".txt");
+	pointOutput.open("cpp_code/solar/point" + to_string(fileNum_) + ".txt");
 	// File is now open, can write to it
 	for(int i = 0; i < point.size(); i++){
 		pointOutput << point(i) << " ";
 	}
 	pointOutput << "\n";
 	pointOutput.close();
-	string command = "./../solar/bin/solar 10 ../solar/points/point" + to_string(fileNum_) + ".txt -fid=" + to_string(fidelity);
+	string command = "cpp_code/solar/bin/solar 10 cpp_code/solar/point" + to_string(fileNum_) + ".txt -fid=" + to_string(fidelity);
 	// Got the code to run system and get output from
 	// https://stackoverflow.com/questions/478898/how-do-i-execute-a-command-and-get-the-output-of-the-command-within-c-using-po
 	array<char, 128> buffer;
@@ -155,7 +155,7 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
     }
 
 	// Still need to extract the output!
-	string filename = "../solar/points/point" + to_string(fileNum_) + ".txt";
+	string filename = "cpp_code/solar/point" + to_string(fileNum_) + ".txt";
 	remove(filename.c_str());
 
 	// When the code executes, if a hidden constraint is violated, 1e+20 is returned. Replace this with upper bound on the function output
@@ -170,12 +170,12 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 }
 
 double SOLARFunction::evaluate(VectorXd &point){
-	printf("Call high\n");
+	printf("High\n");
 	return callSimulation(point, 1);
 }
 
 double SOLARFunction::evaluateLow(VectorXd &point){
-	printf("Call low\n");
+	printf("Low\n");
 	return callSimulation(point, fidelityLevel_);
 }
 

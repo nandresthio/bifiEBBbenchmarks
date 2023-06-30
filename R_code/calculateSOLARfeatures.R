@@ -17,12 +17,9 @@ tic()
 args = commandArgs(trailingOnly=TRUE)
 indexNum = as.numeric(args[[1]])
 
-sourceCpp(paste0('../cpp_code/testSave.cpp'), rebuild = TRUE)
+sourceCpp('cpp_code/rFeatureAnalysis', rebuild = TRUE)
 
-Y <- read.table("../solar/points/evaluatedPoints.txt", header = TRUE, sep = " ")
-
-
-
+Y <- read.table("data/features/evaluatedPoints.txt", header = TRUE, sep = " ")
 
 Yreplaced <- Y
 Yreplaced[Yreplaced == 1e+20] <- 2500
@@ -31,26 +28,6 @@ Yremoved <- Y
 for(fid in c("0.10", '0.20', '0.30', '0.40', '0.50', '0.60', '0.70', '0.80', '0.90', "1.00")){
   Yremoved <- Yremoved[Yremoved[paste0("fid", fid)] != 1e+20, ]
 }
-
-# X <- Yreplaced[, paste0("x", 1:5)]
-# X$x1 <- (X$x1 - 793) / (995 - 793)
-# X$x2 <- (X$x2 - 2) / (50 - 2)
-# X$x3 <- (X$x3 - 2) / (30 - 2)
-# X$x4 <- (X$x4 - 0.01) / (5 - 0.01)
-# X$x5 <- (X$x5 - 0.01) / (5 - 0.01)
-# write.table(X, 'solar/points/evaluatedPointsReplaced.txt', quote = FALSE, row.names = FALSE, col.names = FALSE)
-# Y <- Yreplaced$fid1.00
-# write.table(Y, 'solar/points/evaluatedPointsReplacedValues.txt', quote = FALSE, row.names = FALSE, col.names = FALSE)
-# 
-# X <- Yremoved[, paste0("x", 1:5)]
-# X$x1 <- (X$x1 - 793) / (995 - 793)
-# X$x2 <- (X$x2 - 2) / (50 - 2)
-# X$x3 <- (X$x3 - 2) / (30 - 2)
-# X$x4 <- (X$x4 - 0.01) / (5 - 0.01)
-# X$x5 <- (X$x5 - 0.01) / (5 - 0.01)
-# write.table(X, 'solar/points/evaluatedPointsRemoved.txt', quote = FALSE, row.names = FALSE, col.names = FALSE)
-# Y <- Yremoved$fid1.00
-# write.table(Y, 'solar/points/evaluatedPointsRemovedValues.txt', quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 index <- 0
 for(type in c("replaced", "removed")){
@@ -71,7 +48,7 @@ for(type in c("replaced", "removed")){
     }
     
     if(index != indexNum){next}
-  
+    # Scale input as internally the interface with the executable takes the domain to be in [0,1]^5
     X$x1 <- (X$x1 - 793) / (995 - 793)
     X$x2 <- (X$x2 - 2) / (50 - 2)
     X$x3 <- (X$x3 - 2) / (30 - 2)
@@ -88,10 +65,8 @@ for(type in c("replaced", "removed")){
     basicFeaturesNames <- c("instances",
                             "feature_dimension",
                             "feature_CC",
-                            "feature_C",
                             "feature_RRMSE", 
-                            paste0("feature_LCC", suffixes),
-                            paste0("feature_LC", suffixes))
+                            paste0("feature_LCC", suffixes))
     
     
     dim <- functionDimension(paste0("SOLAR", fid))
@@ -100,7 +75,7 @@ for(type in c("replaced", "removed")){
     
     allFeatures <- initialVals
     names(allFeatures) <- basicFeaturesNames
-    write.table(allFeatures, paste0("../data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
+    write.table(allFeatures, paste0("data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
     toc()
     
     testFunctionHigh <- function(x){
@@ -168,7 +143,7 @@ for(type in c("replaced", "removed")){
         names(localFeatures) <- localFeaturesNames
         allFeatures <- c(allFeatures, localFeatures)
         
-        write.table(allFeatures, paste0("../data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
+        write.table(allFeatures, paste0("data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
         toc()
       },
       error=function(cond) {
@@ -223,7 +198,7 @@ for(type in c("replaced", "removed")){
         allFeatures <- c(allFeatures, localFeatures)
         
         
-        write.table(allFeatures, paste0("../data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
+        write.table(allFeatures, paste0("data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
         toc()
       },
       error=function(cond) {
@@ -276,7 +251,7 @@ for(type in c("replaced", "removed")){
         names(localFeatures) <- localFeaturesNames
         allFeatures <- c(allFeatures, localFeatures)
         
-        write.table(allFeatures, paste0("../data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
+        write.table(allFeatures, paste0("data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
         toc()
       },
       error=function(cond) {
@@ -291,7 +266,7 @@ for(type in c("replaced", "removed")){
     
     # At this point should have all the features, if this is the first index, turn matrix into a data frame
     allFeatures <- as.data.frame(allFeatures)
-    write.table(allFeatures, paste0("../data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
+    write.table(allFeatures, paste0("data/clusterResults/featureRun", index, "_SOLAR.txt"), quote = FALSE, row.names = FALSE)
   }
   toc()
 }

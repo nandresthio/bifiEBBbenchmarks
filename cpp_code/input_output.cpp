@@ -391,7 +391,7 @@ void generateAndSaveSample(Function* function, int sampleSize, int subsetSampleS
 		printf("Generate sample: ");
 		sampleGenerator->prePrint_ = "Generate sample: ";
 	}
-	samplePlanFilename = "../data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(sampleSize) + "-s" + to_string(seed) + ".txt";
+	samplePlanFilename = "data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(sampleSize) + "-s" + to_string(seed) + ".txt";
 	sampledPoints = readPointsFromFile(samplePlanFilename, sampleSize, function->d_);
 	if(sampledPoints.empty()){
 		sampledPoints = sampleGenerator->randomLHS(sampleSize);
@@ -425,7 +425,7 @@ void generateAndSaveSample(Function* function, int sampleSize, int subsetSampleS
 			sampleGenerator->prePrint_ = "Generate subset sample: ";
 		}
 		// Choose a subset
-		samplePlanFilename = "../data/samplePlans/morrisMitchellSubset-dim" + to_string(function->d_) + "-nL" + to_string(sampleSize) + "-nH" + to_string(subsetSampleSize) + "-s" + to_string(seed) + ".txt";
+		samplePlanFilename = "data/samplePlans/morrisMitchellSubset-dim" + to_string(function->d_) + "-nL" + to_string(sampleSize) + "-nH" + to_string(subsetSampleSize) + "-s" + to_string(seed) + ".txt";
 		subsetSampledPoints = readPointsFromFile(samplePlanFilename, subsetSampleSize, function->d_);
 		// Again, if empty need to find them and store them
 		if(subsetSampledPoints.empty()){
@@ -462,9 +462,9 @@ pair<vector<VectorXd>, vector<VectorXd> > readInOrGenerateInitialSample(Function
 	// First generate the sample, read it if the file exists
 	if(lowFiBudget > 0){
 		// First try to read both sets
-		samplePlanFilename = "../data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(lowFiBudget) + "-s" + to_string(seed) + ".txt";
+		samplePlanFilename = "data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(lowFiBudget) + "-s" + to_string(seed) + ".txt";
 		sampledPointsLow = readPointsFromFile(samplePlanFilename, lowFiBudget, function->d_);
-		samplePlanFilename = "../data/samplePlans/morrisMitchellSubset-dim" + to_string(function->d_) + "-nL" + to_string(lowFiBudget) + "-nH" + to_string(highFiBudget) + "-s" + to_string(seed) + ".txt";
+		samplePlanFilename = "data/samplePlans/morrisMitchellSubset-dim" + to_string(function->d_) + "-nL" + to_string(lowFiBudget) + "-nH" + to_string(highFiBudget) + "-s" + to_string(seed) + ".txt";
 		sampledPoints = readPointsFromFile(samplePlanFilename, highFiBudget, function->d_);
 		
 		// If there is no low fidelity sample, need to choose both samples
@@ -507,7 +507,7 @@ pair<vector<VectorXd>, vector<VectorXd> > readInOrGenerateInitialSample(Function
 		
 	
 	}else{
-		samplePlanFilename = "../data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(highFiBudget) + "-s" + to_string(seed) + ".txt";
+		samplePlanFilename = "data/samplePlans/morrisMitchellLHS-dim" + to_string(function->d_) + "-n" + to_string(highFiBudget) + "-s" + to_string(seed) + ".txt";
 		sampledPoints = readPointsFromFile(samplePlanFilename, highFiBudget, function->d_);
 		if(sampledPoints.empty()){
 			if(printInfo){
