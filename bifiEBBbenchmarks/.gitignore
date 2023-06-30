@@ -1,0 +1,11 @@
+# Compiled Object files
+*.o
+*.exe
+
+# Ignore certain files in the data folder
+/data/features/*.txt
+/data/features/filtering/*.txt
+/data/samplePlans/*.txt
+/data/clusterResults
+# Scripts used for unimelb
+/scripts
