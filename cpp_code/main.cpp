@@ -10,6 +10,7 @@ int main(int argc, char *argv[]){
 	
 	// This line creates a bifidelity function class which can be queried for both high and low fidelity function values
 	BiFidelityFunction* function = processFunctionName("ToalBranin0.50");
+	
 	// The dimension and sampling domain can be accessed as follows:
 	printf("Working with a function of dimension %d, and sampling domain ", function->d_);
 	for(int i = 0; i < function->d_; i++){

@@ -1,3 +1,4 @@
+options(warn = -1)
 library(flacco)
 library(lhs)
 library(plyr)
@@ -11,13 +12,16 @@ library(class)
 library(pracma)
 library(ParamHelpers)
 library(stringr)
-source("customFeatureCalculation.R")
+source("R_code/customFeatureCalculation.R")
 tic()
+
+# RUN THIS FROM TERMINAL AS FOLLOWS:
+# Rscript R_code/calculateSOLARfeatures.R 1 9 0
 
 args = commandArgs(trailingOnly=TRUE)
 indexNum = as.numeric(args[[1]])
 
-sourceCpp('cpp_code/rFeatureAnalysis', rebuild = TRUE)
+sourceCpp('cpp_code/rFeatureAnalysis.cpp', rebuild = TRUE)
 
 Y <- read.table("data/features/evaluatedPoints.txt", header = TRUE, sep = " ")
 

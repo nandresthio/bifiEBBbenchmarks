@@ -1,3 +1,4 @@
+options(warn = -1)
 library(flacco)
 library(lhs)
 library(plyr)
@@ -11,13 +12,16 @@ library(class)
 library(pracma)
 library(ParamHelpers)
 library(stringr)
-source("customFeatureCalculation.R")
+source("R_code/customFeatureCalculation.R")
 
+
+# RUN THIS FROM TERMINAL AS FOLLOWS:
+# Rscript R_code/featureCalculationWithActualSample.R 1 10 0
 
 # Select functions for which sample features will be calculated
 functions <- read.table("data/availableFunctions/chosenTestSuiteN305.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
-functions <- read.table("data/availableFunctions/literatureBiSourceDim5.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
-functions <- functions[str_which(functions, "SOLAR")]
+# functions <- read.table("data/availableFunctions/literatureBiSourceDim5.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
+# functions <- functions[str_which(functions, "SOLAR")]
 # Select sizes for low and high fidelities
 highFiSizes <- seq(2, 20, by = 2)
 lowFiSizes <- seq(4, 20, by = 4)
@@ -35,6 +39,8 @@ indexAdd = as.numeric(args[[3]])
 
 arrayNumStart = indexAdd + (indexNum - 1) * indexMult + 1
 arrayNumEnd = indexAdd + indexNum * indexMult
+
+disp(paste0("Running from index ", arrayNumStart, " to index ", arrayNumEnd))
 
 tic()
 
@@ -56,14 +62,20 @@ for(index in 1:length(functionNames)){
   }else{
     seed <- as.numeric(substring(bits[seedChar], 5))
   }
-  
+  disp(functionName)
   disp("Get range:")
-  range <- functionMinMax(functionName, seed)
-  disp(range)
-  
-  fmin <- range[[1]]
-  fmax <- range[[2]]
-  
+  # If dealing with SOLAR instance, finding these will take forever and
+  # never be actually used, so skip
+  if(substr(functionName, 1, 5) == "SOLAR"){
+    disp("Actually skipping SOLAR range (takes too long and is not used)")
+    fmin = 0
+    fmax = 0
+  }else{
+    range <- functionMinMax(functionName, seed)
+    fmin <- range[[1]]
+    fmax <- range[[2]]
+    disp(range)
+  }
   
   testFunctionHigh <- function(x){
     return(sampleFunction(functionName, x, 0, TRUE, fmin, fmax))

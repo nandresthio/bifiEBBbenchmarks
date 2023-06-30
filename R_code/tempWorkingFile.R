@@ -154,7 +154,7 @@ lowCorrFeats <- colnames(standarisedData[-1])[abs(corrs) < 0.3]
 
 
 
-
+temp <- read.table("data/clusterResults/sampleFeatureRun_arrayJob1-10.txt", header = TRUE, sep = " ")
 
 
 temp <- allFeatures[c(1, str_which(colnames(allFeatures), "level"))]

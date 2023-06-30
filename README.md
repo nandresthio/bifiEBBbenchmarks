@@ -48,4 +48,5 @@ TO BE CONTINUED!!
   - Call `bin\solar -check`
   - If all goes well, this should be ready to go!
  - Deal with linking Eigen when using Sourcecpp
+ - Make a comment that everything (executable and Rscript) should always be run from the parent folder
 

@@ -1,3 +1,4 @@
+options(warn = -1)
 library(flacco)
 library(lhs)
 library(plyr)
@@ -11,7 +12,11 @@ library(class)
 library(pracma)
 library(ParamHelpers)
 library(stringr)
-source("customFeatureCalculation.R")
+source("R_code/customFeatureCalculation.R")
+
+# RUN THIS FROM TERMINAL AS FOLLOWS:
+# Rscript R_code/featureCalculation.R 1 10 0
+
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -21,6 +26,8 @@ indexAdd = as.numeric(args[[3]])
 
 arrayNumStart = indexAdd + (indexNum - 1) * indexMult + 1
 arrayNumEnd = indexAdd + indexNum * indexMult
+
+disp(paste0("Running from index ", arrayNumStart, " to index ", arrayNumEnd))
 
 tic()
 

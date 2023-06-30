@@ -158,6 +158,7 @@ vector<double> calculateFunctionFeatures(BiFidelityFunction* function, int sampl
 		}	
 	}
 
+
 	// Calculate features
 	// Define all weights as 1 to get normal correlation coefficient
 	vector<double> weightsNormal(size, 1);
@@ -195,12 +196,21 @@ pair<vector<double>, vector<double> > calculateLocalCorrelations(BiFidelityFunct
 		printf("Weird, calling calculate local correlations with different sized vectors for high, low and sample. Stopping now...\n");
 		exit(0);
 	}
+
+	// So seems like the first thing to do is to scale the locations so that different dimension ranges don't mess with distances
+	scalePoints(sample, function);
+	// Now the points lie in [0,1]^d, so the radius of the hyperball with center at (0.5, ... , 0.5) 
+	// which contains the domain has a radius of 0.5 * sqrt(d)
+	// The hyperball which has a volume of size r relative to the original hyperball has a radius 
+	// of r^{1/d} * 0.5 * sqrt(d)
+	double maxDist =  pow(r, 1.0 / function->d_) * 0.5 * sqrt(function->d_);
+
 	// Calculate distance for which neighbourhood applies
-	double maxDist = 0.0;
-	for(int i = 0; i < function->d_; i++){
-		maxDist += pow(function->upperBound_[i] - function->lowerBound_[i], 2);
-	}
-	maxDist = r *sqrt(maxDist);
+	// double maxDist = 0.0;
+	// for(int i = 0; i < function->d_; i++){
+	// 	maxDist += pow(function->upperBound_[i] - function->lowerBound_[i], 2);
+	// }
+	// maxDist = pow(r, 1.0 / function->d_) * sqrt(maxDist);
 	// Cycle through each sample and calculate and store local correlation
 	vector<double> localCorrValues(sampleSize, 0.0);
 	vector<double> localCorrValuesNotSquared(sampleSize, 0.0);
@@ -279,6 +289,9 @@ pair<vector<double>, vector<double> > calculateLocalCorrelations(BiFidelityFunct
 	localCorrsNotSquared.push_back(lccMeanNotSquared);
 	localCorrsNotSquared.push_back(lccSDNotSquared);
 	localCorrsNotSquared.push_back(lccCoeffNotSquared);
+
+	// Unscale points before I forget and I use them in the future
+	unscalePoints(sample, function);
 	
 	return make_pair(localCorrs, localCorrsNotSquared);
 }
