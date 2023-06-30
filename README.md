@@ -37,3 +37,9 @@ Below is the BibTex for citing this version of the code. (UPDATE ZENODO)
 This code implements test functions for Bi-Fidelity Expensive Black-Box problems. These problems have a high and low source of information, which are used to either accurately model or to optimise the high fidelity source. This repository provides implementations of a vast set of functions pairs, provides Latin Hypercube Sampling (LHS) plans which have been spread out.
 
 TO BE CONTINUED!!
+
+## To do
+ - Add instructions on populating folders `data/samplePlans` and `features` from figshare
+ - Add instructions on adding SOLAR folder if want to use SOLAR instances
+ - Deal with linking Eigen when using Sourcecpp
+

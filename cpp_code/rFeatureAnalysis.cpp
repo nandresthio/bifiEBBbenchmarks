@@ -1,8 +1,4 @@
 #include <Rcpp.h>
-#include <RcppEigen.h>
-// [[Rcpp::depends(RcppEigen)]]
-using Eigen::Dense;  
-
 
 #include "libraries.hpp"
 #include "functions.hpp"
@@ -24,7 +20,7 @@ vector<double> vectorXdtoVectorDouble(VectorXd point){
 
 vector< vector<double> > multipleVectorXdtoVectorDouble(vector<VectorXd> points){
 	vector< vector<double> > newPoints;
-	for(int i = 0; i < points.size(); i++){
+	for(int i = 0; i < (int)points.size(); i++){
 		newPoints.push_back(vectorXdtoVectorDouble(points[i]));
 	}
 	return newPoints;
@@ -32,7 +28,7 @@ vector< vector<double> > multipleVectorXdtoVectorDouble(vector<VectorXd> points)
 
 VectorXd vectorDoubletoVectorXd(vector<double> point){
 	VectorXd newPoint(point.size());
-	for(int i = 0; i < point.size(); i++){
+	for(int i = 0; i < (int)point.size(); i++){
 		newPoint(i) = point[i];
 	}
 	return newPoint;
@@ -40,7 +36,7 @@ VectorXd vectorDoubletoVectorXd(vector<double> point){
 
 vector< VectorXd > multipleVectorDoubletoVectorXd(vector< vector<double> > points){
 	vector< VectorXd > newPoints;
-	for(int i = 0; i < points.size(); i++){
+	for(int i = 0; i < (int)points.size(); i++){
 		newPoints.push_back(vectorDoubletoVectorXd(points[i]));
 	}
 	return newPoints;

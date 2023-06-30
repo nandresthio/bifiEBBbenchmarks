@@ -190,11 +190,6 @@ calculateAdjustedR2Custom = function(mod) {
   SS_res = crossprod(resi)
   SS_total = SS_reg + SS_res
   n = length(resi)
-  print("Info")
-  print(SS_reg)
-  print(SS_res)
-  print(SS_total)
-  print(n)
   # NICO: Removing code below as it should only happen with a perfect fit,
   # which should be simplified to adjusted R2 of 1
   # NICO: Some of the coefficients might be 0, should not count them in this
@@ -205,11 +200,6 @@ calculateAdjustedR2Custom = function(mod) {
   
   if(sum(resi) == 0){return(1)}
   p = length(mod$coefficients) - 1L
-  print(p)
-  print(drop(1 - (SS_res / SS_total) / ((n - p - 1) / (n - 1))))
-  print((SS_res / SS_total) / ((n - p - 1) / (n - 1)))
-  print("Done")
-  
   drop(1 - (SS_res / SS_total) / ((n - p - 1) / (n - 1)))
 }
 
