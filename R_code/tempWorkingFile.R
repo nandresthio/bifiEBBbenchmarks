@@ -159,5 +159,17 @@ temp <- read.table("data/clusterResults/sampleFeatureRun_arrayJob1-10.txt", head
 
 temp <- allFeatures[c(1, str_which(colnames(allFeatures), "level"))]
 
+allFeatures$feature_dimension <- as.factor(allFeatures$feature_dimension)
+ggscatter(allFeatures[allFeatures$feature_dimension == 4, ], x = "feature_LCC_0_5", y = "feature_CC", shape = "feature_dimension")
+plot()
+
+
+temp <- features[features$feature_dimension == 10, 1:20]
+plot(temp$feature_LCC_0_7, temp$feature_CC)
+
+
+allFeatures <- features
+
+
 
 

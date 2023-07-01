@@ -19,7 +19,8 @@ tic()
 # Rscript R_code/calculateSOLARfeatures.R 1 9 0
 
 args = commandArgs(trailingOnly=TRUE)
-indexNum = as.numeric(args[[1]])
+indexStart = as.numeric(args[[1]])
+indexEnd = as.numeric(args[[2]])
 
 sourceCpp('cpp_code/rFeatureAnalysis.cpp', rebuild = TRUE)
 
@@ -51,7 +52,7 @@ for(type in c("replaced", "removed")){
       X <- Yremoved[, paste0("x", 1:5)]
     }
     
-    if(index != indexNum){next}
+    if(!(index %in% indexStart:indexEnd)){next}
     # Scale input as internally the interface with the executable takes the domain to be in [0,1]^5
     X$x1 <- (X$x1 - 793) / (995 - 793)
     X$x2 <- (X$x2 - 2) / (50 - 2)

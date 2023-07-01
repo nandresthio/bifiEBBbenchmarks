@@ -5,6 +5,7 @@
 # Ignore certain files in the data folder
 /data/features/*.txt
 /data/features/filtering/*.txt
+/data/features/old
 /data/samplePlans/*.txt
 /data/clusterResults
 # Scripts used for unimelb cluster

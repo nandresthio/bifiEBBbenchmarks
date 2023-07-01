@@ -144,7 +144,7 @@ for(index in 1:length(functionNames)){
   featobjectLow = createFeatureObject(X = X, fun = testFunctionLow)
   featobjectMid = createFeatureObject(X = X, fun = testFunctionMid)
   
-  featureSets <- c("ela_meta", "ic", "basic", "disp", "pca", "nbc")
+  featureSets <- c("ela_conv", "ela_distr", "ela_level", "ela_meta", "ic", "basic", "disp", "pca", "nbc")
   
   for(set in featureSets){
       disp(paste0("Working on feature set ", set))
