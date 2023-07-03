@@ -22,7 +22,7 @@ source("R_code/dataProcessor.R")
 # # COMBINE ALL THE FEATURE FILES INTO A SINGLE FILE
 # features <- combineArrayResults("featureRun", 1, 1624, 50)
 # solarFeatures <- read.table("data/clusterResults/featureRun1_SOLAR.txt", header = TRUE, sep = " ", fill = TRUE)
-# for(i in 2:18){
+# for(i in 2:9){
 #   solarFeatures <- rbind(solarFeatures, read.table(paste0("data/clusterResults/featureRun", i, "_SOLAR.txt"), header = TRUE, sep = " ", fill = TRUE))
 # }
 # solarFeatures <- solarFeatures[1:9, ]
@@ -210,8 +210,7 @@ source("R_code/dataProcessor.R")
 #                    "feature_high_ela_level_lda_qda_25",
 #                    "feature_high_ela_level_lda_qda_50",
 #                    "feature_low_ela_level_lda_qda_10",
-#                    "feature_low_ela_level_lda_qda_25",
-#                    "feature_low_ela_level_lda_qda_50")
+#                    "feature_low_ela_level_lda_qda_25")
 # 
 # # Features with an unbound value which only need to be scaled
 # features_scale <- c("feature_high_disp_ratio_mean_02",
@@ -266,36 +265,36 @@ source("R_code/dataProcessor.R")
 # 
 # write.table(standarisedData, "data/features/featuresCleanStandarised.txt", quote = FALSE, row.names = FALSE)
 # # COMPLETED STANDARISE FEATURE VALUES FOR INSTANCE FILTERING
-
-
-
-
-# # BEGIN INSTANCE FILTERING
-# # What follows is the implementation of the instance filtering proposed by
-# # Hossein Alipour et al. in "Enhanced instance space analysis for the maximum flow problem"
-# # Define function for instance filtering based on feature values only
-# purifyInstances <- function(featureData, eps){
-#   # First create a dataframe in which to store all the information
-#   labels <- data.frame(matrix(ncol = 0, nrow = nrow(featureData)))
-#   labels$preclude <- FALSE
-#   labels$dissimlar <- TRUE
-#   for(i in 1:(nrow(labels)-1)){
-#     if(labels[i, "preclude"]){next}
-#     cat(paste0("\rWorking on row ", i, "/", nrow(labels)))
-#     for(j in (i+1):nrow(labels)){
-#       if(labels[j, "preclude"]){next}
-#       # cat(paste0("\rWorking on row ", i, "/", nrow(labels), " and second row ", j, "/", nrow(labels)))
-#       dist <- sqrt(sum((Xfeat[i,] - Xfeat[j,])^2))
-#       if(dist > eps){next}
-#       labels[j, "dissimlar"] <- FALSE
-#       labels[j, "preclude"] <- TRUE
-#       labels[j, "removed"] <- i
-#     }
-#   }
-#   cat(paste0("\rWorking on row ", i, "/", nrow(labels), " - done\n"))
-#   return(labels)
-# }
 # 
+
+
+
+# BEGIN INSTANCE FILTERING
+# What follows is the implementation of the instance filtering proposed by
+# Hossein Alipour et al. in "Enhanced instance space analysis for the maximum flow problem"
+# Define function for instance filtering based on feature values only
+purifyInstances <- function(featureData, eps){
+  # First create a dataframe in which to store all the information
+  labels <- data.frame(matrix(ncol = 0, nrow = nrow(featureData)))
+  labels$preclude <- FALSE
+  labels$dissimlar <- TRUE
+  for(i in 1:(nrow(labels)-1)){
+    if(labels[i, "preclude"]){next}
+    cat(paste0("\rWorking on row ", i, "/", nrow(labels)))
+    for(j in (i+1):nrow(labels)){
+      if(labels[j, "preclude"]){next}
+      # cat(paste0("\rWorking on row ", i, "/", nrow(labels), " and second row ", j, "/", nrow(labels)))
+      dist <- sqrt(sum((Xfeat[i,] - Xfeat[j,])^2))
+      if(dist > eps){next}
+      labels[j, "dissimlar"] <- FALSE
+      labels[j, "preclude"] <- TRUE
+      labels[j, "removed"] <- i
+    }
+  }
+  cat(paste0("\rWorking on row ", i, "/", nrow(labels), " - done\n"))
+  return(labels)
+}
+
 # # Define function which calculates the Coefficient of variation of the nearest neighbor distances
 # # Essentially tells you how spread out the instances are based on feature values
 # calculateCVNND <- function(featureData){
@@ -449,6 +448,6 @@ for(i in 7:12){
   write.table(finalInstances$instances, paste0("data/availableFunctions/chosenTestSuiteN", nrow(finalInstances), ".txt"), quote = FALSE, col.names = FALSE, row.names = FALSE)
 }
 
-
+eps <- 5.5
 
 

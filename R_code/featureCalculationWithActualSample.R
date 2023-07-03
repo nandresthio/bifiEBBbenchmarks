@@ -19,7 +19,7 @@ source("R_code/customFeatureCalculation.R")
 # Rscript R_code/featureCalculationWithActualSample.R 1 10 0
 
 # Select functions for which sample features will be calculated
-functions <- read.table("data/availableFunctions/chosenTestSuiteN305.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
+functions <- read.table("data/availableFunctions/chosenTestSuiteN207.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
 # functions <- read.table("data/availableFunctions/literatureBiSourceDim5.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
 # functions <- functions[str_which(functions, "SOLAR")]
 # Select sizes for low and high fidelities
