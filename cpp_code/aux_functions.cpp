@@ -4,7 +4,7 @@
 #include "aux_functions.hpp"
 
 
-void shuffleIntVector(vector<int> &inputVector, mt19937 randomGenerator){
+void shuffleIntVector(vector<int> &inputVector, mt19937 &randomGenerator){
 	for(int i = (int)inputVector.size() - 1; i > 0; i--){
 		uniform_int_distribution<int> uniform(0,i);
 		int temp = inputVector[i];
@@ -15,7 +15,7 @@ void shuffleIntVector(vector<int> &inputVector, mt19937 randomGenerator){
 	}
 }
 
-void shuffleDoubleVector(vector<double> &inputVector, mt19937 randomGenerator){
+void shuffleDoubleVector(vector<double> &inputVector, mt19937 &randomGenerator){
 	vector<double> copy = inputVector;
 	vector<int> indices;
 	indices.reserve((int)inputVector.size());
