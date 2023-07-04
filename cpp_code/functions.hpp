@@ -739,7 +739,7 @@ class COCOBiFunction : public BiFidelityFunction {
 };
 
 // Unhappy about this but this function is defined elsewhere
-void shuffleDoubleVector(vector<double> &vector, mt19937 randomGenerator);
+void shuffleDoubleVector(vector<double> &vector, mt19937 &randomGenerator);
 
 
 
