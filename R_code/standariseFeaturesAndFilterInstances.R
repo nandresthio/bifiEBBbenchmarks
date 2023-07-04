@@ -448,6 +448,5 @@ for(i in 7:12){
   write.table(finalInstances$instances, paste0("data/availableFunctions/chosenTestSuiteN", nrow(finalInstances), ".txt"), quote = FALSE, col.names = FALSE, row.names = FALSE)
 }
 
-eps <- 5.5
 
 

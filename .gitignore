@@ -18,3 +18,7 @@
 .Rhistory
 MatlabServer.m
 InputStreamByteWrapper.class
+
+
+# R file for local work
+/R_code/tempWorkingFile.R

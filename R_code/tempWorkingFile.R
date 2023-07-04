@@ -171,5 +171,11 @@ plot(temp$feature_LCC_0_7, temp$feature_CC)
 allFeatures <- features
 
 
+c("instances", featuresBound01, featuresBound11, features_norm, features_scale)[!(c("instances", featuresBound01, featuresBound11, features_norm, features_scale) %in% colnames(allFeatures))]
+
+
+temp <- features[c("instances", "feature_low_ela_level_lda_qda_50")]
+
+
 
 

@@ -24,7 +24,7 @@ indexEnd = as.numeric(args[[2]])
 
 sourceCpp('cpp_code/rFeatureAnalysis.cpp', rebuild = TRUE)
 
-Y <- read.table("data/features/evaluatedPoints.txt", header = TRUE, sep = " ")
+Y <- read.table("data/misc/solarEvaluatedPoints.txt", header = TRUE, sep = " ")
 
 Yreplaced <- Y
 Yreplaced[Yreplaced == 1e+20] <- 2500
