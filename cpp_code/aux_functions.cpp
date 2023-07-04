@@ -5,7 +5,7 @@
 
 
 void shuffleIntVector(vector<int> &inputVector, mt19937 randomGenerator){
-	for(int i = (int)inputVector.size(); i > 0; i--){
+	for(int i = (int)inputVector.size() - 1; i > 0; i--){
 		uniform_int_distribution<int> uniform(0,i);
 		int temp = inputVector[i];
 		int newIndex = uniform(randomGenerator);
