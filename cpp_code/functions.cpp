@@ -170,12 +170,10 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 }
 
 double SOLARFunction::evaluate(VectorXd &point){
-	printf("High\n");
 	return callSimulation(point, 1);
 }
 
 double SOLARFunction::evaluateLow(VectorXd &point){
-	printf("Low\n");
 	return callSimulation(point, fidelityLevel_);
 }
 
