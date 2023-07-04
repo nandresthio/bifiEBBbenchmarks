@@ -189,7 +189,7 @@ vector<VectorXd> SampleGenerator::morrisMitchellSubset(vector<VectorXd> &pointSe
 	for(int i = 0; i < n; i++){
 		ordering.push_back(i);
 	}
-	shuffleIntVector(ordering.begin(), ordering.end(), randomGenerator_);
+	shuffleIntVector(ordering, randomGenerator_);
 	// Initial subset is read off from initial indexes in ordering
 	vector<VectorXd> pointSubset;
 	pointSubset.reserve(subsetSize);

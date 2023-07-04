@@ -4,26 +4,26 @@
 #include "aux_functions.hpp"
 
 
-void shuffleIntVector(vector<int> &vector, mt19937 randomGenerator){
-	for(int i = (int)vector.size(); i > 0; i--){
+void shuffleIntVector(vector<int> &inputVector, mt19937 randomGenerator){
+	for(int i = (int)inputVector.size(); i > 0; i--){
 		uniform_int_distribution<int> uniform(0,i);
-		int temp = vector[i];
+		int temp = inputVector[i];
 		int newIndex = uniform(randomGenerator);
-		vector[i] = vector[newIndex];
-		vector[newIndex] = temp;
+		inputVector[i] = inputVector[newIndex];
+		inputVector[newIndex] = temp;
 	}
 }
 
-void shuffleDoubleVector(vector<double> &vector, mt19937 randomGenerator){
-	vector<double> copy = vector;
+void shuffleDoubleVector(vector<double> &inputVector, mt19937 randomGenerator){
+	vector<double> copy = inputVector;
 	vector<int> indices;
-	indices.reserve((int)vector.size());
-	for(int i = 0; i < (int)vector.size(); i++){
+	indices.reserve((int)inputVector.size());
+	for(int i = 0; i < (int)inputVector.size(); i++){
 		indices.push_back(i);
 	}
 	shuffleIntVector(indices, randomGenerator);
-	for(int i = 0; i < (int)vector.size(); i++){
-		vector[i] = copy[i];
+	for(int i = 0; i < (int)inputVector.size(); i++){
+		inputVector[i] = copy[i];
 	}
 }
 

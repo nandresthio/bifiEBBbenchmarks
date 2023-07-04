@@ -1461,7 +1461,7 @@ void COCOBiFunction::initialiseConstants(){
 			localOptima_.push_back(localOptimum);
 		}
 		// Shuffle all alpha values except first
-   		shuffle(alphasTemp, randGen_);
+   		shuffleDoubleVector(alphasTemp, randGen_);
    		for(int i = 0; i < (int)alphasTemp.size(); i++){
    			alphas_.push_back(alphasTemp[i]);
    		}
