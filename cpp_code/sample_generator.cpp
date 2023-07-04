@@ -52,7 +52,7 @@ vector<VectorXd> SampleGenerator::randomLHS(int sampleSize){
 		for(int j = 0; j < sampleSize; j++){
 			ordering.push_back(j);
 		}
-   		shuffle(ordering.begin(), ordering.end(), randomGenerator_);
+   		shuffleIntVector(ordering, randomGenerator_);
    		orderings.push_back(ordering);
 	}
 	// For each sample, get a random value within allowed range
@@ -189,7 +189,7 @@ vector<VectorXd> SampleGenerator::morrisMitchellSubset(vector<VectorXd> &pointSe
 	for(int i = 0; i < n; i++){
 		ordering.push_back(i);
 	}
-	shuffle(ordering.begin(), ordering.end(), randomGenerator_);
+	shuffleIntVector(ordering.begin(), ordering.end(), randomGenerator_);
 	// Initial subset is read off from initial indexes in ordering
 	vector<VectorXd> pointSubset;
 	pointSubset.reserve(subsetSize);

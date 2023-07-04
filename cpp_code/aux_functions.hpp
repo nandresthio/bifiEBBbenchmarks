@@ -7,6 +7,12 @@
 
 // Auxiliary functions to be used by different methods troughout the project.
 
+void shuffleIntVector(vector<int> &vector, mt19937 randomGenerator);
+
+void shuffleDoubleVector(vector<double> &vector, mt19937 randomGenerator);
+
+
+
 
 void scalePoint(VectorXd &point, Function* function);
 

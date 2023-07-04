@@ -4,6 +4,30 @@
 #include "aux_functions.hpp"
 
 
+void shuffleIntVector(vector<int> &vector, mt19937 randomGenerator){
+	for(int i = (int)vector.size(); i > 0; i--){
+		uniform_int_distribution<int> uniform(0,i);
+		int temp = vector[i];
+		int newIndex = uniform(randomGenerator);
+		vector[i] = vector[newIndex];
+		vector[newIndex] = temp;
+	}
+}
+
+void shuffleDoubleVector(vector<double> &vector, mt19937 randomGenerator){
+	vector<double> copy = vector;
+	vector<int> indices;
+	indices.reserve((int)vector.size());
+	for(int i = 0; i < (int)vector.size(); i++){
+		indices.push_back(i);
+	}
+	shuffleIntVector(indices, randomGenerator);
+	for(int i = 0; i < (int)vector.size(); i++){
+		vector[i] = copy[i];
+	}
+}
+
+
 
 void scalePoint(VectorXd &point, Function* function){
 	for(int i = 0; i < (int)point.size(); i++){

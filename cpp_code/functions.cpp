@@ -164,7 +164,6 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	if(val > 100000){
 		val = 2500;
 	}
-	printf("%.2f\n", val);
 	
 	return val;
 }
@@ -1446,6 +1445,8 @@ void COCOBiFunction::initialiseConstants(){
 		if(function_ == 21){num = 101;}
 		else{num = 21;}
 		alphas_.reserve(num);
+		vector<double> alphasTemp;
+		alphasTemp.reserve(num - 1);
 		localOptima_.reserve(num);
 		matrixPerm_.reserve(num);
 		// Save all alpha values and dummy vectors of optima
@@ -1454,13 +1455,16 @@ void COCOBiFunction::initialiseConstants(){
 				if(function_ == 21){alphas_.push_back(1000);}
 				else{alphas_.push_back(1000000);}
 			}
-			else{alphas_.push_back(pow(1000.0, 2.0 * (i - 1.0) / (num - 2.0)));}
+			else{alphasTemp.push_back(pow(1000.0, 2.0 * (i - 1.0) / (num - 2.0)));}
 
 			VectorXd localOptimum(d_);
 			localOptima_.push_back(localOptimum);
 		}
 		// Shuffle all alpha values except first
-   		shuffle(alphas_.begin() + 1, alphas_.end(), randGen_);
+   		shuffle(alphasTemp, randGen_);
+   		for(int i = 0; i < (int)alphasTemp.size(); i++){
+   			alphas_.push_back(alphasTemp[i]);
+   		}
    		// Generate random optima
    		double smallRange;
    		double bigRange;
