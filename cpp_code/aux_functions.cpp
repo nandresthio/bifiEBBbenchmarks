@@ -9,7 +9,6 @@ void shuffleIntVector(vector<int> &inputVector, mt19937 &randomGenerator){
 		uniform_int_distribution<int> uniform(0,i);
 		int temp = inputVector[i];
 		int newIndex = uniform(randomGenerator);
-		printf("%d\n", newIndex);
 		inputVector[i] = inputVector[newIndex];
 		inputVector[newIndex] = temp;
 	}
