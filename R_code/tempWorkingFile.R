@@ -177,5 +177,18 @@ c("instances", featuresBound01, featuresBound11, features_norm, features_scale)[
 temp <- features[c("instances", "feature_low_ela_level_lda_qda_50")]
 
 
+features <- combineArrayResults("featureRun", 1, 1624, 50)
+solarFeatures <- read.table("data/clusterResults/featureRun1_SOLAR.txt", header = TRUE, sep = " ", fill = TRUE)
+for(i in 2:9){
+  solarFeatures <- rbind(solarFeatures, read.table(paste0("data/clusterResults/featureRun", i, "_SOLAR.txt"), header = TRUE, sep = " ", fill = TRUE))
+}
+solarFeatures <- solarFeatures[1:9, ]
+temp <- rbind.fill(solarFeatures, features)
+
+temp <- temp[colnames(allFeatures)]
+
+
+
+
 
 
