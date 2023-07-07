@@ -1,3 +1,27 @@
+// ######################################################################################
+
+// # Copyright 2023, Nicolau Andrés-Thió
+
+// # Permission is hereby granted, free of charge, to any person obtaining a copy
+// # of this software and associated documentation files (the "Software"), to deal
+// # in the Software without restriction, including without limitation the rights
+// # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// # copies of the Software, and to permit persons to whom the Software is
+// # furnished to do so, subject to the following conditions:
+
+// # The above copyright notice and this permission notice shall be included in all
+// # copies or substantial portions of the Software.
+
+// # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// # SOFTWARE.
+
+// ######################################################################################
+
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
@@ -7,6 +31,7 @@
 // References to papers where the instances are defined are given at the beginning of each set of functions,
 // but the whole list is first given here in order of appearance:
 
+//		- Sebastien le Digabel SOLAR power plant simulation (https://github.com/bbopt/solar)
 // 		- Toal DJ (2015) "Some considerations regarding the use of multi-fidelity kriging in the construction of surrogate models."
 // 		- Song X, Lv L, Sun W, Zhang J (2019) "A radial basis function-based multi-fidelity surrogate model: exploring
 // 				correlation between high-fidelity and low-fidelity models."
@@ -92,7 +117,8 @@ class BiFidelityFunction : public Function {
 	vector<double> evaluateManyLow(vector<VectorXd> &points);
 };
 
-// Function which queries the SOLAR simulation engine https://github.com/bbopt/solar
+// The following is an interface with the black-box simulation engine SOLAR, which
+// simulates a solar power plant. For more details, see https://github.com/bbopt/solar
 class SOLARFunction : public BiFidelityFunction {
 	public:
 	SOLARFunction(double fidelityLevel, int fileNum = 0);
@@ -106,8 +132,6 @@ class SOLARFunction : public BiFidelityFunction {
 };
 
 
-// Function identical to SongToalForretal, but of higher dimension.
-// Dimensions other than d = 1 have no impact on the function value.
 class NicoSongToalForretalFunction : public BiFidelityFunction {
 	public:
 	NicoSongToalForretalFunction(int dim, double a);
@@ -116,7 +140,6 @@ class NicoSongToalForretalFunction : public BiFidelityFunction {
 	virtual double evaluateLow(VectorXd &point) override;
 	double a_;
 };
-
 
 
 // The following functions are defined in 
@@ -572,7 +595,52 @@ class ParkHartmannH6Function : public BiFidelityFunction {
 
 
 
-
+// Disturbance functions based on all high fidelity functions implemented above (a total of 38 unique high fidelity functions)
+// The function index specifies the high fidelity function, the list matching the index and the function is given below.
+// Note the names are the function name when knwon, otherwise it is the collection of the authors which proposed it.
+//
+// Low fidelity function creation is that preseneted in 
+// Andres-Thio N, Munoz MA, Smith-Miles K (2022): "Bi-fidelity Surrogate Modelling: Showcasing the need for new test instances"
+//
+// Function indexes:
+//		1: LiuPedagogical
+//		2: ShiGramacyLee
+//		3: ShiCurrinSin
+//		4: ShiHolsclaw
+//		5: ShiSantner
+//		6: Branin
+//		7: ShiNumberSix
+//		8: ShiNumberSeven
+//		9: ShiBeale
+//		10: ShiStyblinskiTang
+//		11: ShiCurrinExp
+//		12: ShiLim
+//		13: ShiGramacy
+//		14: DongBohachevsky
+//		15: DongBooth
+//		16: DongHimmelblau
+//		17: DongSixHumpCamelback
+//		18: XiongCurrinExp
+//		19: MarchWillcoxRosenbrock
+//		20: Paciorek
+//		21: HartmannH3
+//		22: ShiDettePepelyshevExp
+//		23: Woods
+//		24: HartmannH4
+//		25: Park
+//		26: XiongParkSecond
+//		27: Colville
+//		28: LiuStyblinskiTang
+//		29: Rastrigin d = 5
+//		30: HartmannH6
+//		31: Rosenbrock
+//		32: ShiDettePepelyshev
+//		33: LiuAckley10
+//		34: Trid
+//		35: Rastrigin d = 10
+//		36: Ellipsoid
+//		37: LiuDixonPrice
+//		38: LiuAckley20
 class disturbanceBasedBiFunction : public BiFidelityFunction{
 public:
 	disturbanceBasedBiFunction(int function, int seed);
@@ -587,10 +655,6 @@ public:
 
 	// Basic disturbance used is a trigonometric function.
 	double addBasicDisturbance(double value);
-
-
-
-
 
 	int function_;							// Function instanciated, between 1-24.
 	int seed_;								// Random seed used for reproducibility.
@@ -612,7 +676,6 @@ public:
 	int basicDisturbanceFrequency_;			// Frequency of basic disturbance, affects behaviour of trigonometric functions.
 	double basicDisturbanceAmplitude_;		// Amplitude of trigonometric functions in the basic disturbance.
 	
-
 };
 
 
@@ -738,7 +801,7 @@ class COCOBiFunction : public BiFidelityFunction {
 	
 };
 
-// Unhappy about this but this function is defined elsewhere
+// This function is called within COCO, need to define it here so that the compiler knows what is going on
 void shuffleDoubleVector(vector<double> &vector, mt19937 &randomGenerator);
 
 

@@ -1,3 +1,27 @@
+######################################################################################
+
+# Copyright 2023, Nicolau Andrés-Thió
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+######################################################################################
+
 source("R_code/dataProcessor.R")
 
 # The code that follows is divided into four sections, each of which can be run
@@ -16,7 +40,6 @@ source("R_code/dataProcessor.R")
 
 # - The fourth runs an instance filtering technique to create as varied a subset
 #   as possible to conduct further testing.
-
 
 
 # # COMBINE ALL THE FEATURE FILES INTO A SINGLE FILE
@@ -210,7 +233,8 @@ source("R_code/dataProcessor.R")
 #                    "feature_high_ela_level_lda_qda_25",
 #                    "feature_high_ela_level_lda_qda_50",
 #                    "feature_low_ela_level_lda_qda_10",
-#                    "feature_low_ela_level_lda_qda_25")
+#                    "feature_low_ela_level_lda_qda_25",
+#                    "feature_low_ela_level_lda_qda_50")
 # 
 # # Features with an unbound value which only need to be scaled
 # features_scale <- c("feature_high_disp_ratio_mean_02",
@@ -259,42 +283,42 @@ source("R_code/dataProcessor.R")
 # 
 # if(ncol(allFeatures[!(colnames(allFeatures) %in% c("instances", featuresBound01, featuresBound11, features_norm, features_scale))]) > 0){
 #   print(paste0("NOTE: Not including features ",
-#                allFeatures[!(colnames(allFeatures) %in% c("instances", featuresBound01, featuresBound11, features_norm, features_scale))],
+#                colnames(allFeatures)[!(colnames(allFeatures) %in% c("instances", featuresBound01, featuresBound11, features_norm, features_scale))],
 #   " as not specified what transformation to apply to them!"))
 # }
 # 
 # write.table(standarisedData, "data/features/featuresCleanStandarised.txt", quote = FALSE, row.names = FALSE)
 # # COMPLETED STANDARISE FEATURE VALUES FOR INSTANCE FILTERING
+
+
+
+
+# # BEGIN INSTANCE FILTERING
+# # What follows is the implementation of the instance filtering proposed by
+# # Hossein Alipour et al. in "Enhanced instance space analysis for the maximum flow problem"
+# # Define function for instance filtering based on feature values only
+# purifyInstances <- function(featureData, eps){
+#   # First create a dataframe in which to store all the information
+#   labels <- data.frame(matrix(ncol = 0, nrow = nrow(featureData)))
+#   labels$preclude <- FALSE
+#   labels$dissimlar <- TRUE
+#   for(i in 1:(nrow(labels)-1)){
+#     if(labels[i, "preclude"]){next}
+#     cat(paste0("\rWorking on row ", i, "/", nrow(labels)))
+#     for(j in (i+1):nrow(labels)){
+#       if(labels[j, "preclude"]){next}
+#       # cat(paste0("\rWorking on row ", i, "/", nrow(labels), " and second row ", j, "/", nrow(labels)))
+#       dist <- sqrt(sum((Xfeat[i,] - Xfeat[j,])^2))
+#       if(dist > eps){next}
+#       labels[j, "dissimlar"] <- FALSE
+#       labels[j, "preclude"] <- TRUE
+#       labels[j, "removed"] <- i
+#     }
+#   }
+#   cat(paste0("\rWorking on row ", i, "/", nrow(labels), " - done\n"))
+#   return(labels)
+# }
 # 
-
-
-
-# BEGIN INSTANCE FILTERING
-# What follows is the implementation of the instance filtering proposed by
-# Hossein Alipour et al. in "Enhanced instance space analysis for the maximum flow problem"
-# Define function for instance filtering based on feature values only
-purifyInstances <- function(featureData, eps){
-  # First create a dataframe in which to store all the information
-  labels <- data.frame(matrix(ncol = 0, nrow = nrow(featureData)))
-  labels$preclude <- FALSE
-  labels$dissimlar <- TRUE
-  for(i in 1:(nrow(labels)-1)){
-    if(labels[i, "preclude"]){next}
-    cat(paste0("\rWorking on row ", i, "/", nrow(labels)))
-    for(j in (i+1):nrow(labels)){
-      if(labels[j, "preclude"]){next}
-      # cat(paste0("\rWorking on row ", i, "/", nrow(labels), " and second row ", j, "/", nrow(labels)))
-      dist <- sqrt(sum((Xfeat[i,] - Xfeat[j,])^2))
-      if(dist > eps){next}
-      labels[j, "dissimlar"] <- FALSE
-      labels[j, "preclude"] <- TRUE
-      labels[j, "removed"] <- i
-    }
-  }
-  cat(paste0("\rWorking on row ", i, "/", nrow(labels), " - done\n"))
-  return(labels)
-}
-
 # # Define function which calculates the Coefficient of variation of the nearest neighbor distances
 # # Essentially tells you how spread out the instances are based on feature values
 # calculateCVNND <- function(featureData){
@@ -447,6 +471,4 @@ for(i in 7:12){
   }
   write.table(finalInstances$instances, paste0("data/availableFunctions/chosenTestSuiteN", nrow(finalInstances), ".txt"), quote = FALSE, col.names = FALSE, row.names = FALSE)
 }
-
-
 
