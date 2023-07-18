@@ -121,14 +121,14 @@ class BiFidelityFunction : public Function {
 // simulates a solar power plant. For more details, see https://github.com/bbopt/solar
 class SOLARFunction : public BiFidelityFunction {
 	public:
-	SOLARFunction(double fidelityLevel, int fileNum = 0);
+	SOLARFunction(double fidelityLevel, string fileAppendix = "");
 	~SOLARFunction();
 	VectorXd scalePoint(VectorXd point);
 	double callSimulation(VectorXd &inputPoint, double fidelity);
 	virtual double evaluate(VectorXd &point) override;
 	virtual double evaluateLow(VectorXd &point) override;
 	double fidelityLevel_;
-	int fileNum_;
+	string fileAppendix_;
 };
 
 

@@ -133,11 +133,11 @@ vector<double> BiFidelityFunction::evaluateManyLow(vector<VectorXd> &points){
 
 
 
-SOLARFunction::SOLARFunction(double fidelityLevel, int fileNum):
+SOLARFunction::SOLARFunction(double fidelityLevel, string fileAppendix):
 	// BiFidelityFunction(5, vector<double> {793, 2, 2, 0.01, 0.01}, vector<double> {995.0, 50.0, 30.0, 5.00, 5.00}),
 	BiFidelityFunction(5, vector<double> {0, 0, 0, 0, 0}, vector<double> {1, 1, 1, 1, 1}),
 	fidelityLevel_(fidelityLevel),
-	fileNum_(fileNum){
+	fileAppendix_(fileAppendix){
 		if(fidelityLevel_ <= 0 || fidelityLevel_ > 1){
 			printf("Initialising SOLAR simulation function with fidelity outside of (0,1], this does not work! Stopping now...\n");
 			exit(0);
@@ -159,9 +159,9 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	// Need to create a file, save the point to be evaluated, evaluate, then delete the file
 	ofstream pointOutput;
 	#if defined(__linux__)
-		pointOutput.open("cpp_code/solar/point" + to_string(fileNum_) + ".txt");
+		pointOutput.open("cpp_code/solar/point" + fileAppendix_ + ".txt");
 	#elif _WIN32
-		pointOutput.open("cpp_code\\solar\\point" + to_string(fileNum_) + ".txt");
+		pointOutput.open("cpp_code\\solar\\point" + fileAppendix_ + ".txt");
 	#else
 		printf("Unsure what system is running this code, stopping here!\n");
 		exit(0);
@@ -174,9 +174,9 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	pointOutput.close();
 	string command;
 	#if defined(__linux__)
-		command = "cpp_code/solar/bin/solar 10 cpp_code/solar/point" + to_string(fileNum_) + ".txt -fid=" + to_string(fidelity);	
+		command = "cpp_code/solar/bin/solar 10 cpp_code/solar/point" + fileAppendix_ + ".txt -fid=" + to_string(fidelity);	
 	#elif _WIN32
-		command = "cpp_code\\solar\\bin\\solar 10 cpp_code\\solar\\point" + to_string(fileNum_) + ".txt -fid=" + to_string(fidelity);
+		command = "cpp_code\\solar\\bin\\solar 10 cpp_code\\solar\\point" + fileAppendix_ + ".txt -fid=" + to_string(fidelity);
 	#endif
 	// Got the code to run system and get output from
 	// https://stackoverflow.com/questions/478898/how-do-i-execute-a-command-and-get-the-output-of-the-command-within-c-using-po
@@ -193,9 +193,9 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	// Still need to extract the output!
 	string filename;
 	#if defined(__linux__)
-		filename = "cpp_code/solar/point" + to_string(fileNum_) + ".txt";
+		filename = "cpp_code/solar/point" + fileAppendix_ + ".txt";
 	#elif _WIN32
-		filename = "cpp_code\\solar\\point" + to_string(fileNum_) + ".txt";
+		filename = "cpp_code\\solar\\point" + fileAppendix_ + ".txt";
 	#endif
 
 	remove(filename.c_str());

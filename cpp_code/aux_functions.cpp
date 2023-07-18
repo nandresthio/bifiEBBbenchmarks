@@ -213,23 +213,23 @@ vector<double> calculateFunctionFeatures(BiFidelityFunction* function, int sampl
 	// Calculate LCC values
 	pair< vector<double>, vector<double> > localCorrelations = calculateLocalCorrelations(function, r, pVals, sample, highSample, lowSample);
 	// Store features
-	// int n = (int)localCorrelations.first.size();
-	// vector<double> results(3 + 2*n, 0.0);
-	// results[0] = correlationCoefficient;
-	// results[1] = sampleCorrelation;
-	// results[2] = relativeError;
-	// for(int i = 0; i < n; i++){
-	// 	results[3 + i] = localCorrelations.first[i];
-	// 	results[3 + n + i] = localCorrelations.second[i];
-	// }
-	
 	int n = (int)localCorrelations.first.size();
-	vector<double> results(2 + n, 0.0);
+	vector<double> results(2 + 2*n, 0.0);
 	results[0] = correlationCoefficient;
+	// results[1] = sampleCorrelation;
 	results[1] = relativeError;
 	for(int i = 0; i < n; i++){
 		results[2 + i] = localCorrelations.first[i];
+		results[2 + n + i] = localCorrelations.second[i];
 	}
+	
+	// int n = (int)localCorrelations.first.size();
+	// vector<double> results(2 + n, 0.0);
+	// results[0] = correlationCoefficient;
+	// results[1] = relativeError;
+	// for(int i = 0; i < n; i++){
+	// 	results[2 + i] = localCorrelations.first[i];
+	// }
 
 
 	return results;
@@ -248,7 +248,11 @@ pair<vector<double>, vector<double> > calculateLocalCorrelations(BiFidelityFunct
 	// which contains the domain has a radius of 0.5 * sqrt(d)
 	// The hyperball which has a volume of size r relative to the original hyperball has a radius 
 	// of r^{1/d} * 0.5 * sqrt(d)
-	double maxDist =  pow(r, 1.0 / function->d_) * 0.5 * sqrt(function->d_);
+	double maxDistRelativeVolume =  pow(r, 1.0 / function->d_) * 0.5 * sqrt(function->d_);
+
+	// Also will use max distance and return both
+	// Since scaled, this will be sqrt d
+	double maxDist = sqrt(function->d_);
 
 	// Calculate distance for which neighbourhood applies
 	// double maxDist = 0.0;
@@ -258,26 +262,41 @@ pair<vector<double>, vector<double> > calculateLocalCorrelations(BiFidelityFunct
 	// maxDist = pow(r, 1.0 / function->d_) * sqrt(maxDist);
 	// Cycle through each sample and calculate and store local correlation
 	vector<double> localCorrValues(sampleSize, 0.0);
-	vector<double> localCorrValuesNotSquared(sampleSize, 0.0);
 	vector<double> weights;
 	vector<double> localHighSample;
 	vector<double> localLowSample;
 	weights.reserve(sampleSize);
 	localHighSample.reserve(sampleSize);
 	localLowSample.reserve(sampleSize);
+
+	vector<double> localCorrValuesRelative(sampleSize, 0.0);
+	vector<double> weightsRelative;
+	vector<double> localHighSampleRelative;
+	vector<double> localLowSampleRelative;
+	weightsRelative.reserve(sampleSize);
+	localHighSampleRelative.reserve(sampleSize);
+	localLowSampleRelative.reserve(sampleSize);
 	for(int i = 0; i < sampleSize; i++){
 		VectorXd point = sample[i];
 		// Cycle through all points, if closer than max dist, add to local vector
 		for(int j = 0; j < sampleSize; j++){
 			double localDist = dist(point, sample[j]);
-			if(localDist > maxDist){continue;}
-			localHighSample.push_back(highSample[j]);
-			localLowSample.push_back(lowSample[j]);
-			weights.push_back(1.0 - localDist / maxDist);
+			if(localDist <= maxDist){
+				localHighSample.push_back(highSample[j]);
+				localLowSample.push_back(lowSample[j]);
+				weights.push_back(1.0 - localDist / maxDist);
+			}
+			if(localDist <= maxDistRelativeVolume){
+				localHighSampleRelative.push_back(highSample[j]);
+				localLowSampleRelative.push_back(lowSample[j]);
+				weightsRelative.push_back(1.0 - localDist / maxDistRelativeVolume);
+			}
+			
+			
 		}
 		// Calculate local correlation
 		localCorrValues[i] = weightedCorrelationCoefficient(localLowSample, localHighSample, weights);
-		localCorrValuesNotSquared[i] = weightedCorrelationCoefficient(localLowSample, localHighSample, weights, false);
+		localCorrValuesRelative[i] = weightedCorrelationCoefficient(localLowSampleRelative, localHighSampleRelative, weightsRelative);
 		// Done! Clear vectors for next iteration
 		weights.clear();
 		localHighSample.clear();
@@ -285,60 +304,60 @@ pair<vector<double>, vector<double> > calculateLocalCorrelations(BiFidelityFunct
 	}
 	// Now process values to get features
 	vector<double> localCorrs((int)pVals.size(), 0.0);
-	vector<double> localCorrsNotSquared((int)pVals.size(), 0.0);
+	vector<double> localCorrsRelative((int)pVals.size(), 0.0);
 	
 	// First LCC^r_p values
 	// Add to count if larger than or equal to cut off
 	for(int i = 0; i < sampleSize; i++){
 		for(int j = 0; j < (int)pVals.size(); j++){
 			if(localCorrValues[i] >= pVals[j]){localCorrs[j]++;}
-			if(localCorrValuesNotSquared[i] >= pVals[j]){localCorrsNotSquared[j]++;}
+			if(localCorrValuesRelative[i] >= pVals[j]){localCorrsRelative[j]++;}
 		}
 	}
 	// Divide by total and done
 	for(int j = 0; j < (int)pVals.size(); j++){localCorrs[j] = localCorrs[j] / sampleSize;}
-	for(int j = 0; j < (int)pVals.size(); j++){localCorrsNotSquared[j] = localCorrsNotSquared[j] / sampleSize;}
+	for(int j = 0; j < (int)pVals.size(); j++){localCorrsRelative[j] = localCorrsRelative[j] / sampleSize;}
 		
 
 	// Now calculate LCC^r_mean, LCC^r_sd and LCC^r_coeff
 	double lccMean = 0;
-	double lccMeanNotSquared = 0;
+	double lccMeanRelative = 0;
 	for(int i = 0; i < sampleSize; i++){
 		lccMean += localCorrValues[i];
-		lccMeanNotSquared += localCorrValuesNotSquared[i];
+		lccMeanRelative += localCorrValuesRelative[i];
 	}
 	lccMean = lccMean / sampleSize;
-	lccMeanNotSquared = lccMeanNotSquared / sampleSize;
+	lccMeanRelative = lccMeanRelative / sampleSize;
 
 	double lccSD = 0;
-	double lccSDNotSquared = 0;
+	double lccSDRelative = 0;
 	for(int i = 0; i < sampleSize; i++){
 		lccSD += pow(localCorrValues[i] - lccMean, 2);
-		lccSDNotSquared += pow(localCorrValuesNotSquared[i] - lccMeanNotSquared, 2);
+		lccSDRelative += pow(localCorrValuesRelative[i] - lccMeanRelative, 2);
 		
 	}
 	lccSD = sqrt(lccSD / (sampleSize - 1));
-	lccSDNotSquared = sqrt(lccSDNotSquared / (sampleSize - 1));
+	lccSDRelative = sqrt(lccSDRelative / (sampleSize - 1));
 
 
 	double lccCoeff = lccSD;
-	double lccCoeffNotSquared = lccSDNotSquared;
+	double lccCoeffRelative = lccSDRelative;
 	
 	if(lccMean > TOL){lccCoeff = lccCoeff / lccMean;}
-	if(lccMeanNotSquared > TOL){lccCoeffNotSquared = lccCoeffNotSquared / lccMeanNotSquared;}
+	if(lccMeanRelative > TOL){lccCoeffRelative = lccCoeffRelative / lccMeanRelative;}
 	
 	localCorrs.push_back(lccMean);
 	localCorrs.push_back(lccSD);
 	localCorrs.push_back(lccCoeff);
 
-	localCorrsNotSquared.push_back(lccMeanNotSquared);
-	localCorrsNotSquared.push_back(lccSDNotSquared);
-	localCorrsNotSquared.push_back(lccCoeffNotSquared);
+	localCorrsRelative.push_back(lccMeanRelative);
+	localCorrsRelative.push_back(lccSDRelative);
+	localCorrsRelative.push_back(lccCoeffRelative);
 
 	// Unscale points before I forget and I use them in the future
 	unscalePoints(sample, function);
 	
-	return make_pair(localCorrs, localCorrsNotSquared);
+	return make_pair(localCorrs, localCorrsRelative);
 }
 
 void printPoint(VectorXd point){

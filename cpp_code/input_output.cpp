@@ -192,9 +192,9 @@ BiFidelityFunction* processFunctionName(string name, bool knowOptVals, double kn
 
 	}else if(name.compare(0, 5, "SOLAR") == 0){
 		double fid = stof(name.substr(5, 4));
-		int fileNum = 0;
-		if(name.size() > 9){fileNum = stoi(name.substr(9));}
-		return new SOLARFunction(fid, fileNum);
+		string fileAppendix = "";
+		if(name.size() > 9){fileAppendix = name.substr(9);}
+		return new SOLARFunction(fid, fileAppendix);
 
 	}else if(name.compare(0, 13, "WangRastrigin") == 0){
 		stringstream ss(name);
