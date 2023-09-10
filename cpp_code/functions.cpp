@@ -155,8 +155,10 @@ VectorXd SOLARFunction::scalePoint(VectorXd point){
 }
 
 double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
+	// printf("file appendix %s\n", fileAppendix_.c_str());
 	VectorXd point = scalePoint(inputPoint);
 	// Need to create a file, save the point to be evaluated, evaluate, then delete the file
+	// printf("Open for write\n");
 	ofstream pointOutput;
 	#if defined(__linux__)
 		pointOutput.open("cpp_code/solar/point" + fileAppendix_ + ".txt");
@@ -172,12 +174,14 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	}
 	pointOutput << "\n";
 	pointOutput.close();
+	// printf("Closed for write\n");
 	string command;
 	#if defined(__linux__)
 		command = "cpp_code/solar/bin/solar 10 cpp_code/solar/point" + fileAppendix_ + ".txt -fid=" + to_string(fidelity);	
 	#elif _WIN32
 		command = "cpp_code\\solar\\bin\\solar 10 cpp_code\\solar\\point" + fileAppendix_ + ".txt -fid=" + to_string(fidelity);
 	#endif
+
 	// Got the code to run system and get output from
 	// https://stackoverflow.com/questions/478898/how-do-i-execute-a-command-and-get-the-output-of-the-command-within-c-using-po
 	array<char, 128> buffer;
@@ -199,6 +203,8 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 	#endif
 
 	remove(filename.c_str());
+
+	// printf("Deleted file\n");
 
 	// When the code executes, if a hidden constraint is violated, 1e+20 is returned. Replace this with upper bound on the function output
 	double val = stof(result);

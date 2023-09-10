@@ -1,6 +1,6 @@
 ######################################################################################
 
-# Copyright 2023, Nicolau Andrés-Thió
+# Copyright 2023, Nicolau Andres-Thio
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,6 @@
 
 ######################################################################################
 
-source("R_code/dataProcessor.R")
-
 # The code that follows is divided into four sections, each of which can be run
 # for reproducibility purposes:
 
@@ -33,17 +31,19 @@ source("R_code/dataProcessor.R")
 # - The second cleans the feature values by removing undesired
 #   features and removing features with None and Inf.
 
-# - The third standarises the feature values by normalising the features, and then
-#   either using this normalised values and bounding them within [-4,4] to remove
-#   outliers, or scaling them to lie within [-2,2]. This is done so that the feature
+# - The third standarises the feature values.
+#   Bounded features are linearly scaled to lie in [-2,2].
+#   Unbounded features are normalised, given a standard mean and variance,
+#   and then bound within [-4,4]. This is done so that the feature
 #   values are comparable when running the instance filtering
 
 # - The fourth runs an instance filtering technique to create as varied a subset
 #   as possible to conduct further testing.
 
+source("R_code/dataProcessor.R")
 
 # # COMBINE ALL THE FEATURE FILES INTO A SINGLE FILE
-# features <- combineArrayResults("featureRun", 1, 1624, 50)
+# features <- combineArrayResults("featureRun", 1, 8120, 10)
 # solarFeatures <- read.table("data/clusterResults/featureRun1_SOLAR.txt", header = TRUE, sep = " ", fill = TRUE)
 # for(i in 2:9){
 #   solarFeatures <- rbind(solarFeatures, read.table(paste0("data/clusterResults/featureRun", i, "_SOLAR.txt"), header = TRUE, sep = " ", fill = TRUE))
@@ -55,9 +55,13 @@ source("R_code/dataProcessor.R")
 
 
 
-
 # # REMOVE FEATURES WITH NAS, INFINITES, AND UNDESIRED FEATURES
 # allFeatures <- read.table("data/features/features.txt", header = TRUE, sep = " ")
+# # First of all, set default level_mmce_lda behaviour to 1 (i.e. error is 1)
+# # when not enough data exists to train a linear or a quadratic model
+# for(feat in colnames(allFeatures)[str_which(colnames(allFeatures), "ela_level_mmce_lda")]){
+#   allFeatures[is.na(allFeatures[feat]), feat] <- 1
+# }
 # # So here want to remove any features with nas, infinites, or non changing values
 # print(colnames(allFeatures[, colSums(is.na(allFeatures)) > 0]))
 # allFeatures <- allFeatures[, colSums(is.na(allFeatures)) == 0]
@@ -147,6 +151,19 @@ source("R_code/dataProcessor.R")
 #                      "feature_LCC_0_975",
 #                      "feature_LCC_sd",
 #                      "feature_LCC_mean",
+#                      "feature_LCCrel_0_1",
+#                      "feature_LCCrel_0_2",
+#                      "feature_LCCrel_0_3",
+#                      "feature_LCCrel_0_4",
+#                      "feature_LCCrel_0_5",
+#                      "feature_LCCrel_0_6",
+#                      "feature_LCCrel_0_7",
+#                      "feature_LCCrel_0_8",
+#                      "feature_LCCrel_0_9",
+#                      "feature_LCCrel_0_95",
+#                      "feature_LCCrel_0_975",
+#                      "feature_LCCrel_sd",
+#                      "feature_LCCrel_mean",
 #                      "feature_high_ela_level_mmce_lda_10",
 #                      "feature_high_ela_level_mmce_qda_10",
 #                      "feature_high_ela_level_mmce_lda_25",
@@ -202,6 +219,7 @@ source("R_code/dataProcessor.R")
 # features_norm <- c("feature_dimension",
 #                    "feature_RRMSE",
 #                    "feature_LCC_coeff",
+#                    "feature_LCCrel_coeff",
 #                    "feature_high_ela_distr_skewness",
 #                    "feature_high_ela_distr_kurtosis",
 #                    "feature_high_ela_distr_number_of_peaks",
@@ -263,7 +281,19 @@ source("R_code/dataProcessor.R")
 #                     "feature_mid_disp_ratio_median_25")
 # 
 # 
-# standarisedData <- allFeatures[c("instances", featuresBound01, featuresBound11, features_norm, features_scale)]
+# names <- c("instances", featuresBound01, featuresBound11, features_norm, features_scale)
+# for(name in names){
+#   if(!(name %in% colnames(allFeatures))){
+#     print(paste0("Note, not including feature ", name, " as it does not exist in allFeatures!"))
+#     names <- names[names != name]
+#     featuresBound01 <- featuresBound01[featuresBound01 != name]
+#     featuresBound11 <- featuresBound11[featuresBound11 != name]
+#     features_norm <- features_norm[features_norm != name]
+#     features_scale <- features_scale[features_scale != name]
+#   }
+# }
+# 
+# standarisedData <- allFeatures[names]
 # for(feat in featuresBound01){
 #   standarisedData[feat] <- standarisedData[feat] * 4 - 2
 # }
@@ -274,7 +304,6 @@ source("R_code/dataProcessor.R")
 #   standarisedData[feat] <- allFeaturesNormalised[feat]
 #   standarisedData[standarisedData[feat] > 4, feat] <- 4
 #   standarisedData[standarisedData[feat] < -4, feat] <- -4
-# 
 # }
 # for(feat in features_scale){
 #   standarisedData[feat] <- (standarisedData[feat] - min(standarisedData[feat])) / (max(standarisedData[feat]) - min(standarisedData[feat]))
@@ -308,7 +337,7 @@ source("R_code/dataProcessor.R")
 #     for(j in (i+1):nrow(labels)){
 #       if(labels[j, "preclude"]){next}
 #       # cat(paste0("\rWorking on row ", i, "/", nrow(labels), " and second row ", j, "/", nrow(labels)))
-#       dist <- sqrt(sum((Xfeat[i,] - Xfeat[j,])^2))
+#       dist <- sqrt(sum((featureData[i,] - featureData[j,])^2))
 #       if(dist > eps){next}
 #       labels[j, "dissimlar"] <- FALSE
 #       labels[j, "preclude"] <- TRUE
@@ -324,6 +353,7 @@ source("R_code/dataProcessor.R")
 # calculateCVNND <- function(featureData){
 #   labels <- data.frame(matrix(ncol = 0, nrow = nrow(featureData)))
 #   labels$minDist <- 0
+#   if(nrow(labels) == 1){return(c(0,1))}
 #   for(i in 1:nrow(labels)){
 #     cat(paste0("\rWorking on row ", i, "/", nrow(labels)))
 #     temp <- featureData[-i, ]
@@ -372,9 +402,9 @@ source("R_code/dataProcessor.R")
 # # pass of instance selection
 # useFeatures <- c("feature_CC",
 #                  "feature_RRMSE",
-#                  "feature_LCC_0_5",
-#                  "feature_LCC_0_95",
-#                  "feature_LCC_sd",
+#                  "feature_LCCrel_0_5",
+#                  "feature_LCCrel_0_95",
+#                  "feature_LCCrel_sd",
 #                  "feature_high_ela_distr_skewness",
 #                  "feature_low_ela_distr_skewness",
 #                  "feature_mid_ela_distr_skewness",

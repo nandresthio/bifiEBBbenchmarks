@@ -1,6 +1,6 @@
 ######################################################################################
 
-# Copyright 2023, Nicolau Andrés-Thió
+# Copyright 2023, Nicolau Andres-Thio
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,8 +45,8 @@ combineArrayResults <- function(runName, arrayStart, arrayEnd, jobsPerArray = 1,
       next
     }
     newData <- read.table(filename, header = TRUE, sep = " ", fill = TRUE)
-    if(nrow(newData) != 50){
-      print(paste0("Weird, for this file have ", nrow(newData), " rows instead of 50!"))
+    if(nrow(newData) != 10){
+      print(paste0("Weird, for this file have ", nrow(newData), " rows instead of 10!"))
       print(filename)
     }
     combinedData <- rbind.fill(combinedData, newData)

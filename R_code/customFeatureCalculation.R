@@ -289,6 +289,17 @@ calculateNearestBetterFeaturesCustom = function(feat.object) {
     }else{
       corrVal = cor(nb.stats$toMe_count, y, use = cor_na)
     }
+    # NICO: Special case where the sd is 0 for both, need to have default situation
+    if(sd(nn.dists, na.rm = TRUE) == 0 & sd(nb.dists, na.rm = TRUE) == 0){
+      return(list(
+        nbc.nn_nb.sd_ratio = 1,
+        nbc.nn_nb.mean_ratio = mean(nn.dists, na.rm = TRUE) / mean(nb.dists, na.rm = TRUE),
+        nbc.nn_nb.cor = 1,
+        nbc.dist_ratio.coeff_var = 
+          sd(dist_ratio, na.rm = TRUE) / mean(dist_ratio, na.rm = TRUE),
+        nbc.nb_fitness.cor = corrVal
+      ))
+    }
     
     return(list(
       nbc.nn_nb.sd_ratio = sd(nn.dists, na.rm = TRUE) / sd(nb.dists, na.rm = TRUE),
@@ -386,7 +397,21 @@ computeInfoContentStatisticsCustom = function(feat.object) {
   y = feat.object$env$init[, feat.object$objective.name]
   n = feat.object$n.obs
   
-  # NICO: Have default values when the 
+  # NICO: Have a problem when only have 1 or 2 points, as this means sequences of
+  # length 2 can be produced. As such, in this case duplicate the entries
+  # to get an approximation (which will be bad, but with so little data this is
+  # to be expected).
+  if(n == 1){
+    X <- rbind(X, X)
+    y <- c(y, y)
+    n <- 2*n
+  }
+  if(n == 2){
+    X <- rbind(X, X)
+    y <- c(y, y)
+    n <- 2*n
+  }
+  
   
   seed = 1
   set.seed(seed)
@@ -400,6 +425,10 @@ computeInfoContentStatisticsCustom = function(feat.object) {
   psi.eps = vapply(epsilon, function(eps) {
     computePsi(permutation = permutation, xdists = d, y = y, eps = eps)
   }, integer(length(permutation) - 1L))
+  # Here have the problem if only have two samples,
+  # need to make sure psi.eps is a matrix
+  # if(!is.matrix(psi.eps)){psi.eps <- matrix(psi.eps,nrow=1)}
+  
   
   H = apply(psi.eps, 2, computeH)
   M = apply(psi.eps, 2, computeM)
@@ -487,6 +516,8 @@ constructSequence = function(X, start, hood) {
 computePsi = function(permutation, xdists, y, eps) {
   y = y[permutation]
   ratio = diff(y) / xdists
+  # NICO: xdists can contain 0 if started with 1 or 2 points, set the ratio to 1
+  ratio[is.na(ratio)] <- 1
   ifelse(abs(ratio) < eps, 0L, as.integer(sign(ratio)))
 }
 

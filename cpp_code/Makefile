@@ -22,8 +22,8 @@
 
 ######################################################################################
 
-cluster:
-	make -f Makefile.cluster
+linux:
+	make -f Makefile.linux
 windows:
 	make -f Makefile.windows
 

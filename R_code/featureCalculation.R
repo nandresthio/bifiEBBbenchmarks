@@ -1,3 +1,31 @@
+######################################################################################
+
+# Copyright 2023, Nicolau Andrés-Thió
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+######################################################################################
+
+# Code which calculates the features based on a large sample. New users should not
+# run this code unless new features need to be calculated for existing instances,
+# or new instances have been generated and the features need to be calculated.
+
 options(warn = -1)
 library(flacco)
 library(lhs)
@@ -37,6 +65,9 @@ newFunctions <- read.table("data/availableFunctions/disturbanceFunctions.txt", h
 litFunctions <- litFunctions[str_which(litFunctions, "SOLAR", negate = TRUE)]
 
 functions <- c(litFunctions, newFunctions)
+
+# functions <- read.table("data/availableFunctions/chosenTestSuiteN312.txt", header = FALSE, sep = " ", fill = TRUE)[[1]]
+
 
 functionNames  <- functions[arrayNumStart:arrayNumEnd]
 functionNames <- functionNames[!is.na(functionNames)]
@@ -109,17 +140,17 @@ for(index in 1:length(functionNames)){
   disp(basicFeatures)
 
   suffixes <- c("_0_1", "_0_2", "_0_3", "_0_4", "_0_5", "_0_6", "_0_7", "_0_8", "_0_9", "_0_95", "_0_975", "_mean", "_sd", "_coeff")
-  # basicFeaturesNames <- c("instances",
-  #                         "feature_CC",
-  #                         "feature_C",
-  #                         "feature_RRMSE",
-  #                         paste0("feature_LCC", suffixes),
-  #                         paste0("feature_LC", suffixes))
   basicFeaturesNames <- c("instances",
                           "feature_dimension",
                           "feature_CC",
                           "feature_RRMSE",
-                          paste0("feature_LCC", suffixes))
+                          paste0("feature_LCC", suffixes),
+                          paste0("feature_LCCrel", suffixes))
+  # basicFeaturesNames <- c("instances",
+  #                         "feature_dimension",
+  #                         "feature_CC",
+  #                         "feature_RRMSE",
+  #                         paste0("feature_LCC", suffixes))
 
   initialVals <- c(functionName, dim, basicFeatures)
 

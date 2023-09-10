@@ -248,11 +248,11 @@ pair<vector<double>, vector<double> > calculateLocalCorrelations(BiFidelityFunct
 	// which contains the domain has a radius of 0.5 * sqrt(d)
 	// The hyperball which has a volume of size r relative to the original hyperball has a radius 
 	// of r^{1/d} * 0.5 * sqrt(d)
-	double maxDistRelativeVolume =  pow(r, 1.0 / function->d_) * 0.5 * sqrt(function->d_);
+	double maxDistRelativeVolume =  pow(r, 1.0 / function->d_) * sqrt(function->d_);
 
 	// Also will use max distance and return both
-	// Since scaled, this will be sqrt d
-	double maxDist = sqrt(function->d_);
+	// Since scaled, this will be sqrt d, times the ratio
+	double maxDist = r * sqrt(function->d_);
 
 	// Calculate distance for which neighbourhood applies
 	// double maxDist = 0.0;

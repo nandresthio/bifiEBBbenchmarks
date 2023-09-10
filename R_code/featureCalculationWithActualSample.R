@@ -22,7 +22,9 @@
 
 ######################################################################################
 
-# Code which calculates the features based on a small sample
+# Code which calculates the features based on a small sample. New users should not
+# run this code unless new features need to be calculated for existing instances,
+# or new instances have been generated and the features need to be calculated.
 
 options(warn = -1)
 library(flacco)
@@ -46,8 +48,6 @@ source("R_code/customFeatureCalculation.R")
 
 # Select functions for which sample features will be calculated
 functions <- read.table("data/availableFunctions/chosenTestSuiteN312.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
-# functions <- read.table("data/availableFunctions/literatureBiSourceDim5.txt", header = FALSE, sep = " ", fill = TRUE)[[1]] 
-# functions <- functions[str_which(functions, "SOLAR")]
 # Select sizes for low and high fidelities
 highFiSizes <- seq(2, 20, by = 2)
 lowFiSizes <- seq(4, 20, by = 4)
@@ -157,7 +157,8 @@ for(index in 1:length(functionNames)){
                                 "feature_sample_budgetRatio",
                                 "feature_sample_CC",
                                 "feature_sample_RRMSE", 
-                                paste0("feature_sample_LCC", suffixes))
+                                paste0("feature_sample_LCC", suffixes),
+                                paste0("feature_sample_LCCrel", suffixes))
         
         initialVals <- c(paste0("(", functionName, ",", highFiBudget, ",", lowFiBudget, ",", seed, ')'), 
                          as.numeric(highFiBudget),

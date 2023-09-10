@@ -8,6 +8,7 @@
 /data/features/old
 /data/samplePlans/*.txt
 /data/clusterResults
+/data/misc/SOLARn*
 # Scripts used for unimelb cluster
 /scripts
 # Solar black box simulator, do be downloaded from github to be used
