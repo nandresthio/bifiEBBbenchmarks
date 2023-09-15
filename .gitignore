@@ -23,3 +23,6 @@ InputStreamByteWrapper.class
 
 # R file for local work
 /R_code/tempWorkingFile.R
+
+# Zipped data folder saved to figshare
+data.zip
