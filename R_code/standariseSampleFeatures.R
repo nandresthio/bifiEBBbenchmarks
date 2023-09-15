@@ -62,6 +62,9 @@ source("R_code/dataProcessor.R")
 # for(feat in colnames(allFeatures)[str_which(colnames(allFeatures), "ela_level_mmce_lda")]){
 #   allFeatures[is.na(allFeatures[feat]), feat] <- 1
 # }
+# for(feat in colnames(allFeatures)[str_which(colnames(allFeatures), "ela_level_mmce_qda")]){
+#   allFeatures[is.na(allFeatures[feat]), feat] <- 1
+# }
 # # So here want to remove any features with nas, infinites, or non changing values
 # print(colnames(allFeatures[, colSums(is.na(allFeatures)) > 0]))
 # allFeatures <- allFeatures[, colSums(is.na(allFeatures)) == 0]
@@ -388,7 +391,7 @@ source("R_code/dataProcessor.R")
 #     print(paste0("Skipping ", actualFeat, " as do not have real feature value"))
 #     next
 #   }
-#   
+# 
 #   standarisedData[paste0("feature_diff", actualFeat)] <- standarisedData[paste0("feature", actualFeat)] - standarisedData[paste0("feature_sample", actualFeat)]
 #   print(paste0("Max and min diff of ", actualFeat, " ", min(standarisedData[paste0("feature_diff", actualFeat)]), " ", max(standarisedData[paste0("feature_diff", actualFeat)])))
 # }

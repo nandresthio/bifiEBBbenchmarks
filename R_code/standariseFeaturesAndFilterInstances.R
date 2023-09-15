@@ -62,6 +62,9 @@ source("R_code/dataProcessor.R")
 # for(feat in colnames(allFeatures)[str_which(colnames(allFeatures), "ela_level_mmce_lda")]){
 #   allFeatures[is.na(allFeatures[feat]), feat] <- 1
 # }
+# for(feat in colnames(allFeatures)[str_which(colnames(allFeatures), "ela_level_mmce_qda")]){
+#   allFeatures[is.na(allFeatures[feat]), feat] <- 1
+# }
 # # So here want to remove any features with nas, infinites, or non changing values
 # print(colnames(allFeatures[, colSums(is.na(allFeatures)) > 0]))
 # allFeatures <- allFeatures[, colSums(is.na(allFeatures)) == 0]
@@ -176,6 +179,12 @@ source("R_code/dataProcessor.R")
 #                      "feature_low_ela_level_mmce_qda_25",
 #                      "feature_low_ela_level_mmce_lda_50",
 #                      "feature_low_ela_level_mmce_qda_50",
+#                      "feature_mid_ela_level_mmce_lda_10",
+#                      "feature_mid_ela_level_mmce_qda_10",
+#                      "feature_mid_ela_level_mmce_lda_25",
+#                      "feature_mid_ela_level_mmce_qda_25",
+#                      "feature_mid_ela_level_mmce_lda_50",
+#                      "feature_mid_ela_level_mmce_qda_50",
 #                      "feature_high_ela_meta_lin_simple_adj_r2",
 #                      "feature_high_ela_meta_lin_w_interact_adj_r2",
 #                      "feature_high_ela_meta_quad_simple_adj_r2",
@@ -254,7 +263,7 @@ source("R_code/dataProcessor.R")
 #                    "feature_low_ela_level_lda_qda_25",
 #                    "feature_low_ela_level_lda_qda_50")
 # 
-# # Features with an unbound value which only need to be scaled
+# # Features with an unbound value which only need to be linearly scaled
 # features_scale <- c("feature_high_disp_ratio_mean_02",
 #                     "feature_high_disp_ratio_mean_05",
 #                      "feature_high_disp_ratio_mean_10",
@@ -396,8 +405,6 @@ source("R_code/dataProcessor.R")
 # instancesLit <- instancesLit[sample(1:nrow(instancesLit)), ]
 # # Put them together again
 # instancesOrdered <- rbind(instancesLit, instancesDist, instancesCoco)
-# # Save them in this order so that the file can be looked at without rerunning the process
-# write.table(instancesOrdered, "data/features/featuresCleanStandarisedRandomised.txt", quote = FALSE, row.names = FALSE)
 # # To avoid overrepresentation of a type of instance, select a subset for this
 # # pass of instance selection
 # useFeatures <- c("feature_CC",
@@ -416,6 +423,7 @@ source("R_code/dataProcessor.R")
 #                  "feature_mid_ela_distr_number_of_peaks",
 #                  "feature_high_ela_level_mmce_lda_25",
 #                  "feature_low_ela_level_mmce_lda_25",
+#                  "feature_mid_ela_level_mmce_lda_25",
 #                  "feature_high_ela_meta_quad_simple_adj_r2",
 #                  "feature_low_ela_meta_quad_simple_adj_r2",
 #                  "feature_mid_ela_meta_quad_simple_adj_r2",
@@ -473,32 +481,23 @@ source("R_code/dataProcessor.R")
 #   # Also save the data
 #   write.table(results, "data/features/instancePurificationResults.txt", quote = FALSE, row.names = FALSE)
 # }
+# # What follows is code that just read in all of the processed data, so
+# # a new user can see the different datasets and choose their own
+# # data subset
+# for(i in 7:12){
+#   eps <- results[i, "epsilon"]
+#   labels <- read.table(paste0("data/features/filtering/filteringLabelsEps", eps, ".txt"), header = TRUE, sep = " ")
+#   finalInstances <- instancesOrdered[!labels$preclude,]
+#   # Write final instances to file!
+#   finalInstancesOriginal <- allFeatures[allFeatures$instances %in% finalInstances$instances, ]
+#   finalInstancesLit <- allFeatures[allFeatures$instances %in% instancesLit$instances, ]
+#   finalInstancesLit <- finalInstancesLit[finalInstancesLit$instances %in% finalInstancesOriginal$instances, ]
+#   print(eps)
+#   for(dim in 1:20){
+#     if(sum(finalInstancesOriginal$feature_dimension == dim) == 0){next}
+#     print(paste0(dim, " ", sum(finalInstancesOriginal$feature_dimension == dim), " ", sum(finalInstancesLit$feature_dimension == dim)))
+#   }
+#   write.table(finalInstances$instances, paste0("data/availableFunctions/chosenTestSuiteN", nrow(finalInstances), ".txt"), quote = FALSE, col.names = FALSE, row.names = FALSE)
+# }
 # # INSTANCE FILTERING COMPLETE
-
-
-
-
-# What follows is code that just read in all of the processed data, so
-# a new user can see the different datasets and choose their own 
-# data subset
-allFeatures <- read.table("data/features/featuresClean.txt", header = TRUE, sep = " ")
-standarisedData <- read.table("data/features/featuresCleanStandarised.txt", header = TRUE, sep = " ")
-instancesOrdered <- read.table("data/features/featuresCleanStandarisedRandomised.txt", header = TRUE, sep = " ")
-results <- read.table("data/features/instancePurificationResults.txt", header = TRUE, sep = " ")
-
-for(i in 7:12){
-  eps <- results[i, "epsilon"]
-  labels <- read.table(paste0("data/features/filtering/filteringLabelsEps", eps, ".txt"), header = TRUE, sep = " ")
-  finalInstances <- instancesOrdered[!labels$preclude,]
-  # Write final instances to file!
-  finalInstancesOriginal <- allFeatures[allFeatures$instances %in% finalInstances$instances, ]
-  finalInstancesLit <- allFeatures[allFeatures$instances %in% instancesLit$instances, ]
-  finalInstancesLit <- finalInstancesLit[finalInstancesLit$instances %in% finalInstancesOriginal$instances, ]
-  print(eps)
-  for(dim in 1:20){
-    if(sum(finalInstancesOriginal$feature_dimension == dim) == 0){next}
-    print(paste0(dim, " ", sum(finalInstancesOriginal$feature_dimension == dim), " ", sum(finalInstancesLit$feature_dimension == dim)))
-  }
-  write.table(finalInstances$instances, paste0("data/availableFunctions/chosenTestSuiteN", nrow(finalInstances), ".txt"), quote = FALSE, col.names = FALSE, row.names = FALSE)
-}
 

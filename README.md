@@ -72,7 +72,7 @@ The code related to the SOLAR simulation engine is not provided here, only the c
 
 If all goes well, SOLAR should be installed and the executable ready to be called from the software provided here.
 
-To compile the C++ code given here, first make sure the library Eigen has been installed. Then go to the relevant makefile (i.e. `cpp_code\Makefile.linux` or `cpp_code\Makefile.windows`) and edit the `CFLAGS` to point to the right folder (which contains the installed Eigen library). To compile the C++ code, simply move to the `cpp_code` directory and call `make linux` if using Linux, or `make windows` if using windows. Note all code (both the R files using Rstudio or Rscript, or calling the c++ executable) should be called from the root folder due to the folder structure.
+To compile the C++ code given here, first make sure the library [Eigen has been installed](https://eigen.tuxfamily.org/index.php?title=Main_Page). Then go to the relevant makefile (i.e. `cpp_code\Makefile.linux` or `cpp_code\Makefile.windows`) and edit the `CFLAGS` to point to the right folder (which contains the installed Eigen library). To compile the C++ code, simply move to the `cpp_code` directory and call `make linux` if using Linux, or `make windows` if using windows. Note all code (both the R files using Rstudio or Rscript, or calling the c++ executable) should be called from the root folder due to the folder structure.
 
 
 
@@ -90,3 +90,4 @@ To compile the C++ code given here, first make sure the library Eigen has been i
 [^12]: Xiong S, Qian PZ, Wu CJ (2013) "Sequential design and analysis of high-accuracy and low-accuracy computer codes". Technometrics 55(1):37–46.
 [^13]: Park C, Haftka RT, Kim NH (2018) "Low-fidelity scale factor improves bayesian multi-fidelity prediction by reducing bumpiness of discrepancy function". Structural and Multidisciplinary Optimization 58(2):399–414.
 [^14]: Hansen N, Auger A, Ros R, Mersmann O, Tuˇsar T, Brockhoff D (2020) "COCO: A platform for comparing continuous optimizers in a black-box setting". Optimization Methods and Software URL http://dx.doi.org/https://doi.org/10.1080/10556788.2020.1808977
+[^15]: Kerschke, P. & Trautmann, H. (2019). Comprehensive Feature-Based Landscape Analysis of Continuous and Constrained Optimization Problems Using the R-package flacco. In: Bauer N., Ickstadt K., Lübke K., Szepannek G., Trautmann H., Vichi M. (eds.) Applications in Statistical Computing -- From Music Data Analysis to Industrial Quality Improvement, pp. 93-123, Studies in Classification, Data Analysis, and Knowledge Organization, Springer. URL: https://link.springer.com/chapter/10.1007/978-3-030-25147-5_7
