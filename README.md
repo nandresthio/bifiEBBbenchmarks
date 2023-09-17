@@ -14,11 +14,11 @@ Note that no surrogate models or algorithms are supplied in this reposoritory, a
 
 ## Cite
 
-To cite this software, please cite the paper (ONCE IT HAS BEEN PUBLISHED) using its DOI. To cite the software itself, use the following DOI. (AGAIN, LINK IS NOT CORRECT, UPDATE)
+To cite this software, please cite the paper (ONCE IT HAS BEEN PUBLISHED) using its DOI. To cite the software itself, use the following DOI.
 
-[![DOI](https://zenodo.org/badge/285853815.svg)](https://zenodo.org/badge/latestdoi/285853815)
+[![DOI](https://zenodo.org/badge/659941002.svg)](https://zenodo.org/badge/latestdoi/659941002)
 
-Below is the BibTex for citing this version of the code. (UPDATE ZENODO)
+Below is the BibTex for citing this version of the code.
 
 ```
 @misc{nandres2022,
@@ -28,7 +28,7 @@ Below is the BibTex for citing this version of the code. (UPDATE ZENODO)
   publisher = {GitHub},
   journal = {GitHub repository},
   note = {available for download at https://github.com/nandresthio/bifiEBBbenchmarks},
-  doi = {10.5281/zenodo.6208147}
+  doi = {10.5281/zenodo.8353690}
 } 
 ```
 
