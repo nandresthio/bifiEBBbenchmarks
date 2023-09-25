@@ -38,6 +38,8 @@ class AuxSolver{
 
 	AuxSolver(Function* function, bool min = true, int randomSeed = 0, bool printInfo = false);
 
+	AuxSolver(Function* function, int maxEval, bool min = true, int randomSeed = 0, bool printInfo = false);
+
 	virtual ~AuxSolver();
 
 	// Update the problem which the solver will be run on; both the function and whether it will be a max or min problem
@@ -61,6 +63,8 @@ class AuxSolver{
 	mt19937 randomGenerator_;					// Random number generator
 	bool printInfo_;							// Whether to print the information as the optimisation is running
 	string prePrint_;							// Used to add a message to the print statement when printInfo_ = true
+
+	int maxEval_;								// Number of evaluations the search is allowed
 	
 };
 
@@ -94,10 +98,7 @@ class ARSsolver : public AuxSolver{
 	VectorXd findNewPoint(VectorXd point, double radius);
 
 	int numSearch_;							// Number of spheres employed by the search
-	int maxEval_;							// Number of evaluations the search is allowed
-
 	
-
 };
 
 

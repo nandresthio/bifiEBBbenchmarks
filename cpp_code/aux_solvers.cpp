@@ -30,10 +30,15 @@
 
 
 AuxSolver::AuxSolver(Function* function, bool min, int randomSeed, bool printInfo) :
+	AuxSolver(function, 10000, min, randomSeed, printInfo){}
+
+
+AuxSolver::AuxSolver(Function* function, int maxEval, bool min, int randomSeed, bool printInfo) :
 	function_(function),
 	min_(min),
 	randomSeed_(randomSeed),
-	printInfo_(printInfo){
+	printInfo_(printInfo),
+	maxEval_(maxEval){
 
 	if(randomSeed_ != 0){
 		mt19937 gen(randomSeed);
@@ -89,15 +94,13 @@ int AuxSolver::betterPoint(VectorXd point1, double val1, VectorXd point2, double
 }
 
 ARSsolver::ARSsolver(Function* function, bool min, int randomSeed, bool printInfo) :
-	AuxSolver(function, min, randomSeed, printInfo),
-	numSearch_(10),
-	maxEval_(10000){
+	AuxSolver(function, 10000, min, randomSeed, printInfo),
+	numSearch_(10){
 }
 
 ARSsolver::ARSsolver(Function* function, int numSearch, int maxEval, bool min, int randomSeed, bool printInfo):
-	AuxSolver(function, min, randomSeed, printInfo),
-	numSearch_(numSearch),
-	maxEval_(maxEval){
+	AuxSolver(function, maxEval, min, randomSeed, printInfo),
+	numSearch_(numSearch){
 	}
 
 ARSsolver::~ARSsolver(){
