@@ -195,6 +195,13 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
     }
 
 	// Still need to extract the output!
+	// When the code executes, if a hidden constraint is violated, 1e+20 is returned. Replace this with upper bound on the function output
+	double val = stof(result);
+
+	if(val > 100000){
+		val = 2500;
+	}
+	// Everything looks ok, time to delete the point file
 	string filename;
 	#if defined(__linux__)
 		filename = "cpp_code/solar/point" + fileAppendix_ + ".txt";
@@ -204,15 +211,8 @@ double SOLARFunction::callSimulation(VectorXd &inputPoint, double fidelity){
 
 	remove(filename.c_str());
 
-	// printf("Deleted file\n");
 
-	// When the code executes, if a hidden constraint is violated, 1e+20 is returned. Replace this with upper bound on the function output
-	double val = stof(result);
 
-	if(val > 100000){
-		val = 2500;
-	}
-	
 	return val;
 }
 
