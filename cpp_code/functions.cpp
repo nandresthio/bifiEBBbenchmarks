@@ -50,11 +50,13 @@ Function::Function(int d, vector<double> lowerBound, vector<double> upperBound):
 
 Function::~Function(){};
 
-void Function::checkDimension(VectorXd &point){
+bool Function::checkDimension(VectorXd &point){
 	if(d_ != point.size()){
-		printf("Called Function method on a point with wrong dimension! Stopping now...");
-		exit(1);
+		// printf("Called Function method on a point with wrong dimension! Stopping now...");
+		// exit(1);
+		return false;
 	}
+	return true;
 }
 
 bool Function::pointWithinBounds(VectorXd &point){

@@ -31,6 +31,53 @@
 int main(int argc, char *argv[]){
 
 	// The code in this file shows how the repo can be used
+
+	// First adding code which allows for the executable to be called to sample a function given a name, 
+	// a fidelity level, and a point.
+	if(argc == 4){
+		string functionName = argv[1];
+		int fid = stoi(argv[2]);
+		string pointSpec = argv[3];
+		//Extract point by removing [] and separating based on ,
+		pointSpec = pointSpec.substr(1, pointSpec.size() - 2);
+		vector<double> pointVector;
+		string str;
+		stringstream ss(pointSpec);
+		while (getline(ss, str, ',')){
+            pointVector.push_back(stof(str));
+        }
+        // Turn this into a VectorXd
+        VectorXd point((int)pointVector.size());
+        for(int i = 0; i < (int)pointVector.size(); i++){point(i) = pointVector[i];}
+
+        BiFidelityFunction* function = processFunctionName(functionName);
+    	// Check point has same dimension and is within bounds as specified function	
+        if(function == NULL){printf("Provided function name is not recognised!\n"); return 0;}
+    	if(!function->checkDimension(point)){printf("Provided point has a dimension (%d) different to the provided function (%d)!\n", (int)point.size(), function->d_); return 0;}
+    	if(!function->pointWithinBounds(point)){
+    		printf("Provided point is out of bounds! Provided function has bounds [");
+    		for(int i = 0; i < (int)function->lowerBound_.size() - 1; i++){
+    			printf("[%.2f,%.2f]x", function->lowerBound_[i], function->upperBound_[i]);
+    		}
+    		printf("[%.2f,%.2f]!", function->lowerBound_.back(), function->upperBound_.back());
+    		return 0;
+    	}
+        if(fid == 1){
+        	printf("%.4f", function->evaluate(point));
+        }else if(fid == 0){
+        	printf("%.4f", function->evaluateLow(point));
+        }else{
+        	printf("Unkown fidelity specified, either provide a fidelity of 1 (for high fidelity) or 0 (for low fidelity)\n"); return 0;
+        }
+        return 0;
+
+	}else if(argc != 1){
+		printf("\nIncorrect usage of executable; either call with no inputs to see example usage,\n");
+		printf("or call with ./main FUNCTION FID POINT where\n");
+		printf("		- FUNCTION: String specifying function to be sampled.\n");
+		printf("		- FID: Fidelity level, 0 for low fidelity and 1 for high fidelity.\n");
+		printf("		- POINT: Point to be samples, for example [0.3,0.5] for a 2-dimensional function.\n");	
+	}
 	
 	// This line creates a bifidelity function class which can be queried for both high and low fidelity function values
 	BiFidelityFunction* function = processFunctionName("ToalBranin0.50");

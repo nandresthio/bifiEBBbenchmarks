@@ -69,7 +69,7 @@ class Function {
 	virtual ~Function();
 
 	// Checks whether a point has the same dimension as the sample space of the function.
-	void checkDimension(VectorXd &point);
+	bool checkDimension(VectorXd &point);
 
 	// Check whether a point is within the sample space.
 	bool pointWithinBounds(VectorXd &point);

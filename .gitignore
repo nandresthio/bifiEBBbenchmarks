@@ -26,3 +26,6 @@ InputStreamByteWrapper.class
 
 # Zipped data folder saved to figshare
 data.zip
+
+# Python related file
+.ipynb_checkpoints/
