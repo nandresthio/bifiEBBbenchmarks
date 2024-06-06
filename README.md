@@ -83,6 +83,11 @@ If all goes well, SOLAR should be installed and the executable ready to be calle
 To compile the C++ code given here, first make sure the library [Eigen has been installed](https://eigen.tuxfamily.org/index.php?title=Main_Page). Then go to the relevant makefile (i.e. `cpp_code\Makefile.linux` or `cpp_code\Makefile.windows`) and edit the `CFLAGS` to point to the right folder (which contains the installed Eigen library). To compile the C++ code, simply move to the `cpp_code` directory and call `make linux` if using Linux, or `make windows` if using windows. Note all code (both the R files using Rstudio or Rscript, or calling the c++ executable) should be called from the root folder due to the folder structure.
 
 
+## Acknowledgements
+
+This research was supported by the Australian Research Council under grant number IC200100009 for the ARC Training Centre in Optimisation Technologies, Integrated Methodologies and Applications (OPTIMA). Funding was also received through the Australian Government Research Training Program Scholarship from The University of Melbourne. This research was also supported by The University of Melbourne’s Research Computing Services and the Petascale Campus Initiative.
+
+
 
 [^1]: Andrés-Thió N, Muñoz M A, Smith-Miles K (2022), "Bifidelity surrogate modelling: Showcasing the need for new test instances", INFORMS Journal on Computing 34 (6) 3007–3022.
 [^2]: Toal DJ (2015) "Some considerations regarding the use of multi-fidelity kriging in the construction of surrogate models". Structural and Multidisciplinary Optimization 51(6):1223–1245.
