@@ -1,6 +1,6 @@
 # Bi-fidelity Surrogate Modelling benchmark problems
 
-The software in this repository and data linked to it provide multiple benchmarks for Bi-Fidelity Expensive Black Box (Bf-EBB) problems, both for surrogate model building and for optimisation. It implements both classical instances from the literature, as well as the instance generating procedure presented in the paper [Bi-fidelity Surrogate Modelling: Showcasing the need for new test instances](https://doi.org/10.1287/ijoc.2019.0934) by Andrés-Thió N, Muñoz MA, and Smith-Miles K. It also provides instances measures (here called "features") for analysis of the differences between benchmarks, and uses these features to generate objectively varied benchmark sets of different sizes. These benchmark sets can be used by the community when analysing the performance of new Bi-fidelity Expensive Black-Box problems.
+The software in this repository and data linked to it provide multiple benchmarks for Bi-Fidelity Expensive Black Box (Bf-EBB) problems, both for surrogate model building and for optimisation. It implements both classical instances from the literature, as well as the instance generating procedure presented in the paper [Bi-fidelity Surrogate Modelling: Showcasing the need for new test instances](https://doi.org/10.1287/ijoc.2019.0934) by Andrés-Thió N, Muñoz MA, and Smith-Miles K. It also provides instance measures (here called "features") for analysis of the differences between benchmarks, and uses these features to generate objectively varied benchmark sets of different sizes. These benchmark sets can be used by the community when analysing the performance of new Bi-fidelity Expensive Black-Box problems. The paper [Characterising Harmful Data Sources When Constructing Multi-fidelity Surrogate Models](https://arxiv.org/pdf/2403.08118) by Andrés-Thió N, Muñoz MA, and Smith-Miles K details the procedure followed to calculate and standarise the feature values for all instances, and the generation of unbiased benchark test suites of different sizes.
 
 The main benefits of using this piece of code are the following:
 
@@ -14,11 +14,19 @@ Note that no surrogate models or algorithms are supplied in this reposoritory, a
 
 ## Cite
 
-To cite this software, please cite the paper (ONCE IT HAS BEEN PUBLISHED) using its DOI. To cite the software itself, use the following DOI.
+To cite the usage of this software, please cite the preprint paper using the following BibTex citation:
 
-[![DOI](https://zenodo.org/badge/659941002.svg)](https://zenodo.org/badge/latestdoi/659941002)
+```
+@article{andres2024characterising,
+  title={Characterising harmful data sources when constructing multi-fidelity surrogate models},
+  author={Andr{\'e}s-Thi{\'o}, Nicolau and Mu{\~n}oz, Mario Andr{\'e}s and Smith-Miles, Kate},
+  journal={arXiv preprint arXiv:2403.08118},
+  year={2024}
+}
+} 
+```
 
-Below is the BibTex for citing this version of the code.
+To cite the software itself, use the following DOI: [![DOI](https://zenodo.org/badge/659941002.svg)](https://zenodo.org/badge/latestdoi/659941002); below is the BibTex for citing this version of the code.
 
 ```
 @misc{nandres2022,
@@ -35,7 +43,7 @@ Below is the BibTex for citing this version of the code.
 
 ## Description
 
-This code implements test functions for Bi-Fidelity Expensive Black-Box problems. These problems have a high- and low-fidelity source of information denoted $f_h$ and $f_l$ respectively, which are used to either accurately model or to optimise the high-fidelity source. This repository provides implementations of a vast set of functions pairs $(f_h,f_l)$, implemented as derived classes of the class `BiFidelityFunction`. This C++ contains the functions `evaluate` and `evaluateLow` which return the objective function value of $f_h$ and $f_l$ respectively. The function `processFunctionName` is provided for ease, which takes the name of an instance as a string and returns an instanciated class of the relevant instance. The names of the instances implemented so far are given in the folder `data/availableFunctions`. The files `literatureBiSourceDimN.txt` contain the implemented literature instances of dimension $N$, the file `literature `. For an example on how to instanciate a BiFidelityFunction class, relying on already optimised sampling plans, and querying a function pair for high and low fidelity functions, look at the `cpp_code/main.cpp` file.
+This code implements test functions for Bi-Fidelity Expensive Black-Box problems. These problems have a high- and low-fidelity source of information denoted $f_h$ and $f_l$ respectively, which are used to either accurately model or to optimise the high-fidelity source. This repository provides implementations of a vast set of functions pairs $(f_h,f_l)$, implemented as derived classes of the class `BiFidelityFunction`. This C++ contains the functions `evaluate` and `evaluateLow` which return the objective function value of $f_h$ and $f_l$ respectively. The function `processFunctionName` is provided for ease, which takes the name of an instance as a string and returns an instanciated class of the relevant instance. The names of the instances implemented so far are given in the folder `data/availableFunctions`. The files `literatureBiSourceDimN.txt` contain the implemented literature instances of dimension $N$, the file `literatureSingleSourceAll.txt` provides the function names derived from unique high-fidelity functions, and the file`disturbanceFunctions.txt` contains the instances defined using the instance generating procedure for which features are available. For an example on how to instanciate a BiFidelityFunction class, relying on already optimised sampling plans, and querying a function pair for high and low fidelity functions, look at the `cpp_code/main.cpp` file. A python interface is also provided in `pythonUsage.ipynb` (which can be opened with a Jupyter notebook) for examples on how to use the implemented instances in a python script. Note the code needs to first be compiled as detailed below.
 
 ### Instances
 
@@ -45,7 +53,7 @@ The names of the instances implemented so far are given in the folder `data/avai
 
 In addition, code has been implemented to interface with the SOLAR simulation engine, which simulates the functioning of a solar power plant. The code implemented here queries the tenth function of the simulator, which takes a fidelity as input. The high fidelity source is taken to be this source with a fidelity of 1, and the low-fidelity soource the simulation with a fidelity specified when generating an instance of the `BiFidelityFunction` class. For instance, calling `processFunctionName` with the string `SOLAR0.70` creates an instances where calling `evaluateLow` runs the simulator with a fidelity of 0.70.
 
-Finally the files `chosenTestSuiteN*.txt` contain an objectively varied set of instances of size `*`, constructed by using an instance filtering method to remove similar instances. For further details, the reader is referred to the paper which details the construction of these datasets. For further details on the implementation of each of the function pairs and their original publication[^2][^3][^4][^5][^6][^7][^8][^9][^10][^11][^12][^13][^14], please refer to the file `cpp_code/functions.hpp`, which carefully documents each of the implemented function pairs.
+Finally the files `chosenTestSuiteN*.txt` contain an objectively varied set of instances of size `*`, constructed by using an instance filtering method to remove similar instances. For further details, the reader is referred to the paper which details the construction of these datasets. For further details on the implementation of each of the function pairs and their original publication[^2][^3][^4][^5][^6][^7][^8][^9][^10][^11][^12][^13][^14], please refer to the `Appendix` folder.
 
 
 ### Features
@@ -55,7 +63,7 @@ Features are measures of an instance which allows for comparison between differe
 
 The features are calculated both with a very large sample, and for a variety of smaller sample sizes. The former is done for all of the implemented function pairs (i.e. roughly 80,000 function pairs) using the file `R_code\featureCalculation.R`, and the later is done only for a selected set of 321 function pairs using the file `R_code\featureCalculationWithActualSample.R`. Note new users should not rerun this, as the results are stored in the files `data\features\features.txt` and `data\features\sampleFeatures.txt` respectively available in [figshare](https://figshare.com/projects/Bi-fidelity_Surrogate_Modelling_benchmark_problems_data/178659). The same features are "cleaned" (i.e. features with NAs or Inf are removed) and made available in `data\features\featuresClean.txt` and `data\features\sampleFeaturesClean.txt` respectively. Finally, a processing of the features is also conducted in order to make them comparable. For features which are unbounded, a box-cox transformation is applied which gives the feature values a normal distribution. The values are then standarised and bounded within [-4,4]. For features which are bound, a linear transformation is applied sp that the new bound is [-2,2]. As roughly 95% of the unbound features should lie within the [-2,2] range, this allows for comparison between features. These standarised feature values are stored in the files `data\features\featuresCleanStandarised.txt` and `data\features\sampleFeaturesCleanStandarised.txt`. The files `data\features\sampleAndRealFeatures.txt`and `data\features\sampleAndRealFeaturesStandarised.txt` contain features calculated with a large and small sample for a selected set of 321 instances.
 
-The files `R_code\standariseFeaturesAndFilterInstances.R` and `R_code\standariseSampleFeatures.R` process the feature values and select benchmark sets of different sizes.
+The files `R_code\standariseFeaturesAndFilterInstances.R` and `R_code\standariseSampleFeatures.R` process the feature values and select benchmark sets of different sizes. For detailed definitions of the features, consult the `Appendix` folder.
 
 ### Compilation
 
