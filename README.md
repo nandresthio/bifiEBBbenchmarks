@@ -23,7 +23,6 @@ To cite the usage of this software, please cite the preprint paper using the fol
   journal={arXiv preprint arXiv:2403.08118},
   year={2024}
 }
-} 
 ```
 
 To cite the software itself, use the following DOI: [![DOI](https://zenodo.org/badge/659941002.svg)](https://zenodo.org/badge/latestdoi/659941002); below is the BibTex for citing this version of the code.
